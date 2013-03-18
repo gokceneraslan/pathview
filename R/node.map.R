@@ -1,0 +1,72 @@
+node.map <-
+function(mol.data=NULL, node.data, node.types=c("gene", "ortholog", "compound")[1], node.sum =c("sum","mean", "median", "max", "max.abs", "random")[1]){
+type.sel=node.data$type %in% node.types
+if(sum(type.sel)<1){
+  message("No specified node types in the pathway!")
+  plot.data=NULL
+  return(plot.data)
+}
+node.data=lapply(node.data, "[", type.sel)
+n.nodes=length(node.data$kegg.names)
+spacials=as.matrix(as.data.frame(node.data[c("type", "x", "y", "width", "height")]))
+
+if(is.null(mol.data)){
+    plot.data=sapply(1:n.nodes, function(i){
+      kns=node.data$kegg.names[[i]]
+    if(node.types[1]=="gene") items=as.numeric(kns)
+      else items=kns
+    ord=order(items)
+    items=items[ord]
+     kns=kns[ord]
+      return(c(kns[1], spacials[i,], NA))
+    })
+  } else{
+  
+#map gene data  
+if(is.character(mol.data)){
+gd.names=mol.data
+mol.data=rep(1, length(mol.data))
+names(mol.data)=gd.names
+}
+mol.data=cbind(mol.data)
+
+  if(is.null(colnames(mol.data))) colnames(mol.data)=paste("ge", 1:ncol(mol.data),sep="")
+  genes <- intersect(unlist(node.data$kegg.names), row.names(mol.data))
+#mol.data=as.data.frame(mol.data)
+#warning message: NAs introduced by coercion, wnen compound or non-gene type node
+  if(node.types[1]=="gene") genes =as.numeric(genes)
+
+
+    plot.data=sapply(1:n.nodes, function(i){
+      kns=node.data$kegg.names[[i]]
+    if(node.types[1]=="gene") items=as.numeric(kns)
+      else items=kns
+    ord=order(items)
+    items=items[ord]
+     kns=kns[ord]
+    hit=items %in% genes 
+    if(sum(hit)==0) {
+      return(c(kns[1], spacials[i,], rep(NA, ncol(mol.data))))
+    } else if(sum(hit)==1) {
+      edata=mol.data[as.character(items[hit]),]
+      return(c(kns[hit], spacials[i,], edata))
+    } else {
+      node.sum=eval(as.name(node.sum))
+#      edata=apply(cbind(mol.data[as.character(items[hit]),]), 2, node.sum, na.rm=T)
+      edata=apply(cbind(mol.data[as.character(items[hit]),]), 2, node.sum, na.rm=T)
+      return(c(kns[hit][1], spacials[i,], edata))
+    }    
+  })
+}
+
+colnames(plot.data)=names(node.data$kegg.names)
+plot.data=as.data.frame(t(plot.data), stringsAsFactors = F)
+  plot.data$labels=node.data$labels
+  ncs=ncol(plot.data)
+  plot.data=plot.data[,c(1,ncs,2:(ncs-1))]
+  colnames(plot.data)[c(1,8:ncs)]=c("kegg.names",colnames(mol.data))
+for(ic in (1:ncol(plot.data))[-c(1:3)]) plot.data[,ic]=as.numeric(plot.data[,ic])
+
+return(plot.data)
+}
+

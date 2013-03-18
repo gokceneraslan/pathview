@@ -1,0 +1,20 @@
+citHeader("To cite pathview:")
+
+citEntry(entry="article",  
+  author =       "Luo, Weijun et al",
+  title = 	 "Pathview: a pathway based data integration and visualization tool",
+  journal = 	 "submitted",
+  year = 	 "2013",
+  volume = 	 "",
+  pages = 	 "",
+  textVersion = "Luo, W. et al, Pathview: a pathway based data integration and visualization tool. submitted 2013"
+)
+
+citFooter("This free open-source software implements academic research
+by the authors. Its development took a large amount of extra time and
+effort. If you use it, please support the project by citing the listed
+journal articles.")
+
+
+
+

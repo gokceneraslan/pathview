@@ -1,0 +1,14 @@
+VERSION 1.0.0
+-------------
+  o Initial release with Bioconductor
+
+  o Main function: pathview
+
+  o Four functional modules: 
+    -Downloader: download.kegg;
+    -Parser: node.info, combineKEGGnodes, reaction2edge;
+    -Mapper: node.map, eg2id, id2eg, cpdkegg2name, cpdname2kegg,
+    	     cpd2kegg, cpdidmap, kegg.species.code, mol.sum, 
+	     sim.mol.data;
+    -Viewer: keggview.native, keggview.graph, node.color, 
+    	     col.key, wordwrap, strfit

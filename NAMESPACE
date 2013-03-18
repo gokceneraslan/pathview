@@ -1,0 +1,30 @@
+import(
+       Rgraphviz,
+       methods
+       )
+
+importFrom(png, readPNG)
+importFrom(AnnotationDbi, mget)
+importFrom(utils, data, installed.packages)
+importFrom(graph, addNode)
+
+export(
+       download.kegg,
+       node.info,
+       combineKEGGnodes, reaction2edge,
+
+       node.map,
+       eg2id, id2eg,
+       cpdkegg2name, cpdname2kegg, cpd2kegg, cpdidmap,
+       kegg.species.code,
+       mol.sum,
+       sim.mol.data,
+
+       node.color, col.key,
+       
+       wordwrap, strfit,
+
+       pathview,
+       keggview.native,
+       keggview.graph
+       )
