@@ -24,6 +24,11 @@
 \newcommand{\Rclass}[1]{{\textit{#1}}}
 \newcommand{\Metas}[1]{{\texttt{#1}}}
 
+%float placement
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\bottomfraction}{0.95}
+
 \begin{document}
 \setkeys{Gin}{width=0.8\textwidth}
 \title{Pathview: pathway based data integration and visualization }
@@ -73,7 +78,7 @@ biocLite(c("Rgraphviz", "png", "KEGGgraph", "org.Hs.eg.db"))
 
 Then install \Rpackage{pathview} through R-forge.
 <<install, echo=TRUE, eval=FALSE>>=
-install.packages("pathview",repos=c("http://rforge.net"))
+install.packages("pathview",repos="http://R-Forge.R-project.org")
 @ 
 
 Or install manually: download \Rpackage{pathview} package (from R-forge or Bioconductor, make sure with proper version number and zip format) and save to \verb@/your/local/directory/@.
@@ -82,6 +87,10 @@ install.packages("/your/local/directory/pathview_1.0.0.tar.gz",
     repos = NULL, type = "source")
 @ 
 
+Note that there might be problems when installing \Rpackage{Rgraphviz} or \Rpackage{XML} (\Rpackage{KEGGgraph} dependency) package. For example, on Windows systems,\Rpackage{XML} frequently needs to be installed manually. Its windows binary can be downloaded from \href{http://cran.r-project.org/web/packages/XML/index.html}{CRAN} and then:
+<<<install, echo=TRUE, eval=FALSE>>=
+install.packages("/your/local/directory/XML_3.95-0.2.zip", repos = NULL)
+@ 
 
 \section{Get Started}
 \label{sec:start}
@@ -120,24 +129,6 @@ We also load the demo pathway related data.
 data(demo.paths)
 @
 
-First, we view the exprssion changes of a single sample (pair) on a typical signaling pathway, "Cell Cycle", by specifying the \R{gene.data} and \R{pathway.id} (\hyperref[fig:1a]{Figure \ref*{fig:1a}}). The microarray was done on human tissue, hence \R{species = "hsa"}. Note that such native KEGG view was outupt as a raster image in a PNG file in your working directory.
-<<kegg.native, echo=TRUE>>=
-i <- 1
-pv.out <- pathview(gene.data = gse16873.d[, 1], pathway.id = demo.paths$sel.paths[i],
-                   species = "hsa", out.suffix = "gse16873", kegg.native = T)
-list.files(pattern="hsa04110", full.names=T)
-str(pv.out)
-head(pv.out$plot.data.gene)
-@ 
-
-
-Graph from the first example above has a single layer. Node colors were modified on the original graph layer, and original KEGG node labels (node names) were kept intact. This way the output file size is as small as the original KEGG PNG file, but the computing time is relative long. If we want a fast view and do not mind doubling the output file size, we may do a two-layer graph with \R{same.layer = F}  (\hyperref[fig:1b]{Figure \ref*{fig:1b}}). This way node colors and labels are added on an extra layer above the original KEGG graph. 
-<<kegg.native_2layer, echo=TRUE>>=
-pv.out <- pathview(gene.data = gse16873.d[, 1], pathway.id = demo.paths$sel.paths[i],
-                   species = "hsa", out.suffix = "gse16873.2layer", kegg.native = T,
-                   same.layer = F)
-@ 
-
 \setlength\fboxsep{0pt}
 \setlength\fboxrule{0.5pt}
 \begin{figure}
@@ -161,15 +152,27 @@ pv.out <- pathview(gene.data = gse16873.d[, 1], pathway.id = demo.paths$sel.path
         \label{fig:1}
 \end{figure}
 
-In the above two examples, we view the data on native KEGG pathway graph. This view we get all notes and meta-data on the KEGG graphs, hence the data is more readable and interpretable. However, the output graph is a raster image in PNG format. We may also view the data with a \textit{de novo} pathway graph layout using Graphviz engine  (\hyperref[fig:2]{Figure \ref*{fig:2}}). The graph has the same set of nodes and edges, but with a different layout. We get more controls over the nodes and edge attributes and look. Importantly, the graph is a vector image in PDF format in your working directory. 
-<<graphviz, echo=TRUE>>=
+First, we view the exprssion changes of a single sample (pair) on a typical signaling pathway, "Cell Cycle", by specifying the \R{gene.data} and \R{pathway.id} (\hyperref[fig:1a]{Figure \ref*{fig:1a}}). The microarray was done on human tissue, hence \R{species = "hsa"}. Note that such native KEGG view was outupt as a raster image in a PNG file in your working directory.
+<<kegg.native, echo=TRUE>>=
+i <- 1
 pv.out <- pathview(gene.data = gse16873.d[, 1], pathway.id = demo.paths$sel.paths[i],
-                   species = "hsa", out.suffix = "gse16873", kegg.native = F,
-                   sign.pos = demo.paths$spos[i])
-#pv.out remains the same
-dim(pv.out$plot.data.gene)
+                   species = "hsa", out.suffix = "gse16873", kegg.native = T)
+list.files(pattern="hsa04110", full.names=T)
+str(pv.out)
 head(pv.out$plot.data.gene)
 @ 
+
+
+Graph from the first example above has a single layer. Node colors were modified on the original graph layer, and original KEGG node labels (node names) were kept intact. This way the output file size is as small as the original KEGG PNG file, but the computing time is relative long. If we want a fast view and do not mind doubling the output file size, we may do a two-layer graph with \R{same.layer = F}  (\hyperref[fig:1b]{Figure \ref*{fig:1b}}). This way node colors and labels are added on an extra layer above the original KEGG graph. 
+<<kegg.native_2layer, echo=TRUE>>=
+pv.out <- pathview(gene.data = gse16873.d[, 1], pathway.id = demo.paths$sel.paths[i],
+                   species = "hsa", out.suffix = "gse16873.2layer", kegg.native = T,
+                   same.layer = F)
+@ 
+
+
+In the above two examples, we view the data on native KEGG pathway graph. This view we get all notes and meta-data on the KEGG graphs, hence the data is more readable and interpretable. However, the output graph is a raster image in PNG format. We may also view the data with a \textit{de novo} pathway graph layout using Graphviz engine  (\hyperref[fig:2]{Figure \ref*{fig:2}}). The graph has the same set of nodes and edges, but with a different layout. We get more controls over the nodes and edge attributes and look. Importantly, the graph is a vector image in PDF format in your working directory. 
+
 
 \begin{figure} 
 \begin{center} 
@@ -178,6 +181,15 @@ head(pv.out$plot.data.gene)
 \label{fig:2}
 \end{center}  
 \end{figure} 
+
+<<graphviz, echo=TRUE>>=
+pv.out <- pathview(gene.data = gse16873.d[, 1], pathway.id = demo.paths$sel.paths[i],
+                   species = "hsa", out.suffix = "gse16873", kegg.native = F,
+                   sign.pos = demo.paths$spos[i])
+#pv.out remains the same
+dim(pv.out$plot.data.gene)
+head(pv.out$plot.data.gene)
+@ 
 
 In the example above, both main graph and legend were put in one layer (or page). We just list KEGG edge types and ignore node types in legend as to save space. If we want the complete legend, we can do a Graphviz view with two layers  (\hyperref[fig:3]{Figure \ref*{fig:3}}): page 1 is the main graph, page 2 is the legend. Note that for Graphviz view (PDF file), the concept of ``layer" is slightly different from native KEGG view (PNG file). In both cases, we set argument \R{same.layer=F} for two-layer graph.
 <<graphviz.2layer, echo=TRUE>>=
@@ -192,7 +204,7 @@ pv.out <- pathview(gene.data = gse16873.d[, 1], pathway.id = demo.paths$sel.path
                 \centering
                 \includegraphics[width=11cm,type=pdf,ext=.pdf,read=.pdf,page=1]{hsa04110.gse16873.2layer}
                 \caption{page 1}
-                \label{fig:4a}
+                \label{fig:3a}
         \end{subfigure}
         \\
         \vspace{20pt}
@@ -200,30 +212,13 @@ pv.out <- pathview(gene.data = gse16873.d[, 1], pathway.id = demo.paths$sel.path
                 \centering
                 \includegraphics[width=11cm,type=pdf,ext=.pdf,read=.pdf,page=2]{hsa04110.gse16873.2layer}
                 \caption{page 2}
-                \label{fig:4b}
+                \label{fig:3b}
         \end{subfigure}
         \\
 
         \caption{Example Graphviz view on gene data with \R{same.layer=F}. Note that legend is put on a different page than main graph.}
         \label{fig:3}
 \end{figure}
-
-In Graphviz view, we have more control over the graph layout. We may split the node groups into individual detached nodes  (\hyperref[fig:4a]{Figure \ref*{fig:4a}}). We may even expand the multiple-gene nodes into individual genes  (\hyperref[fig:4b]{Figure \ref*{fig:4b}}). The split nodes or expanded genes may inherit the edges from the unsplit group or unexpanded nodes. This way we tend to get a gene/protein-gene/protein interaction network. And we may better view the network characteristics (modularity etc) and gene-wise (instead of node-wise) data. 
-<<split, echo=TRUE>>=
-pv.out <- pathview(gene.data = gse16873.d[, 1], pathway.id = demo.paths$sel.paths[i], 
-    species = "hsa", out.suffix = "gse16873.split", kegg.native = F, 
-    sign.pos = demo.paths$spos[i], split.group = T)
-dim(pv.out$plot.data.gene)
-head(pv.out$plot.data.gene)
-@ 
-
-<<expanded, echo=TRUE>>=
-pv.out <- pathview(gene.data = gse16873.d[, 1], pathway.id = demo.paths$sel.paths[i], 
-    species = "hsa", out.suffix = "gse16873.split.expanded", kegg.native = F,
-    sign.pos = demo.paths$spos[i], split.group = T, expand.node = T)
-dim(pv.out$plot.data.gene)
-head(pv.out$plot.data.gene)
-@ 
 
 \begin{figure}
         \centering
@@ -245,6 +240,23 @@ head(pv.out$plot.data.gene)
         \caption{Example Graphviz view on gene data with (a) \R{split.group = T}; or (b) \R{expand.node = T}.}
         \label{fig:4}
 \end{figure}
+
+In Graphviz view, we have more control over the graph layout. We may split the node groups into individual detached nodes  (\hyperref[fig:4a]{Figure \ref*{fig:4a}}). We may even expand the multiple-gene nodes into individual genes  (\hyperref[fig:4b]{Figure \ref*{fig:4b}}). The split nodes or expanded genes may inherit the edges from the unsplit group or unexpanded nodes. This way we tend to get a gene/protein-gene/protein interaction network. And we may better view the network characteristics (modularity etc) and gene-wise (instead of node-wise) data. 
+<<split, echo=TRUE>>=
+pv.out <- pathview(gene.data = gse16873.d[, 1], pathway.id = demo.paths$sel.paths[i], 
+    species = "hsa", out.suffix = "gse16873.split", kegg.native = F, 
+    sign.pos = demo.paths$spos[i], split.group = T)
+dim(pv.out$plot.data.gene)
+head(pv.out$plot.data.gene)
+@ 
+
+<<expanded, echo=TRUE>>=
+pv.out <- pathview(gene.data = gse16873.d[, 1], pathway.id = demo.paths$sel.paths[i], 
+    species = "hsa", out.suffix = "gse16873.split.expanded", kegg.native = F,
+    sign.pos = demo.paths$spos[i], split.group = T, expand.node = T)
+dim(pv.out$plot.data.gene)
+head(pv.out$plot.data.gene)
+@ 
 
 
 \section{Data integration}
