@@ -156,7 +156,7 @@ keggview.graph <-function(
   }
   
   gR2.layout=gR2
-#  edgeRenderInfo(gR2.layout)=eAttrs
+  edgeRenderInfo(gR2.layout)=eAttrs
   layoutType=ifelse(is.signal, "dot", "neato")
   gR2.layout <- layoutGraph(gR2.layout, attrs = attrs, nodeAttrs=nAttr, layoutType=layoutType)
   edgeRenderInfo(gR2.layout)=eAttrs
