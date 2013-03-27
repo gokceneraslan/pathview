@@ -1,8 +1,8 @@
 Package: pathview
 Type: Package
 Title: a tool set for pathway based data integration and visualization
-Version: 0.99.9
-Date: 2013-3-25
+Version: 0.99.10
+Date: 2013-3-27
 Author: Weijun Luo
 Maintainer: Weijun Luo <luo_weijun@yahoo.com>
 Description: Pathview is a tool set for pathway based data integration
@@ -24,4 +24,3 @@ Suggests: gage, org.Mm.eg.db, RUnit, BiocGenerics
 License: GPL (>=3.0)
 URL: http://pathview.r-forge.r-project.org/
 LazyLoad: yes
-Packaged: 2013-03-20 00:52:42 UTC; luo
