@@ -69,8 +69,8 @@ This function is written mainly for simulation or experiment with
   input of \code{pathview} main function.
 }
 \references{
-  Luo, W. et al. Pathview: a pathway based data integration and visualization
-  tool. submitted, 2013.
+  Luo, W. and Brouwer, C., Pathview: an R/Bioconductor package for
+  pathway based data integration and visualization. submitted, 2013.
 }
 \author{
   Weijun Luo <luo_weijun@yahoo.com>

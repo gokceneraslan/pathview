@@ -49,8 +49,8 @@ character, the name of result combined node.
   new edge data ("KEGGEdge"); ndata.new, the new node data ("KEGGNode").
 }
 \references{
-  Luo, W. et al. Pathview: a pathway based data integration and visualization
-  tool. submitted, 2013.
+  Luo, W. and Brouwer, C., Pathview: an R/Bioconductor package for
+  pathway based data integration and visualization. submitted, 2013.
 }
 \author{
   Weijun Luo <luo_weijun@yahoo.com>

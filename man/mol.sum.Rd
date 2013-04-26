@@ -63,8 +63,8 @@ a numeric vector or matrix. Its dimensionality is the same as the input
 mol.data except row names are standard molecular IDs.
 }
 \references{
-  Luo, W. et al. Pathview: a pathway based data integration and visualization
-  tool. submitted, 2013.
+  Luo, W. and Brouwer, C., Pathview: an R/Bioconductor package for
+  pathway based data integration and visualization. submitted, 2013.
 }
 \author{
   Weijun Luo <luo_weijun@yahoo.com>

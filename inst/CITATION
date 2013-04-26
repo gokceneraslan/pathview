@@ -1,13 +1,13 @@
 citHeader("To cite pathview:")
 
 citEntry(entry="article",  
-  author =       "Luo, Weijun et al",
-  title = 	 "Pathview: a pathway based data integration and visualization tool",
+  author =       "Luo, Weijun and Brouwer, Cory",
+  title = 	 "Pathview: an R/Bioconductor package for pathway based data integration and visualization",
   journal = 	 "submitted",
   year = 	 "2013",
   volume = 	 "",
   pages = 	 "",
-  textVersion = "Luo, W. et al, Pathview: a pathway based data integration and visualization tool. submitted 2013"
+  textVersion = "Luo, W. and Brouwer C., Pathview: an R/Bioconductor package for pathway based data integration and visualization. submitted 2013"
 )
 
 citFooter("This free open-source software implements academic research

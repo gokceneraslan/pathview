@@ -56,7 +56,7 @@ The vignette is written by assuming the user has minimal R/Bioconductor knowledg
 
 \section{Installation}
 \label{sec:installation}
-Assume R has been correctly installed and accessible under current directory. Otherwise, please contact your system admin or follow the instructions on \href{http://www.r-project.org/}{R website}.
+Assume R and Bioconductor have been correctly installed and accessible under current directory. Otherwise, please contact your system admin or follow the instructions on \href{http://www.r-project.org/}{R website} and \href{http://www.bioconductor.org/install/}{Bioconductor website}. Here I would strongly recommend users to install or upgrade to the latest verison of R (3.0)/Bioconductor (2.12) for simpler installation and better use of \Rpackage{Pathview}. You may need to update your \Rfunction{biocLite} too if you upgrade R/Biocondutor under Windows.
 
 Start R: from Linux/Unix command line, type \verb@R@ (Enter); for Mac or Windows GUI, double click the R application icon to enter R console.
 
@@ -87,7 +87,7 @@ install.packages("/your/local/directory/pathview_1.0.0.tar.gz",
     repos = NULL, type = "source")
 @ 
 
-Note that there might be problems when installing \Rpackage{Rgraphviz} or \Rpackage{XML} (\Rpackage{KEGGgraph} dependency) package. For example, on Windows systems,\Rpackage{XML} frequently needs to be installed manually. Its windows binary can be downloaded from \href{http://cran.r-project.org/web/packages/XML/index.html}{CRAN} and then:
+Note that there might be problems when installing \Rpackage{Rgraphviz} or \Rpackage{XML} (\Rpackage{KEGGgraph} dependency) package with outdated R/Biocondutor. \Rpackage{Rgraphviz} installation is a bit complicate with R 2.5 (Biocondutor 2.10) or earlier versions. Please check this  \href{http://pathview.r-forge.r-project.org/Rgraphviz.README}{Readme file} on \Rpackage{Rgraphviz}. On Windows systems,\Rpackage{XML} frequently needs to be installed manually. Its windows binary can be downloaded from \href{http://cran.r-project.org/web/packages/XML/index.html}{CRAN} and then:
 <<<install, echo=TRUE, eval=FALSE>>=
 install.packages("/your/local/directory/XML_3.95-0.2.zip", repos = NULL)
 @ 
