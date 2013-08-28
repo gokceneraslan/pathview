@@ -23,11 +23,13 @@ data(gse16873.d)
 }
 \format{
   demo.paths is a named list with ids and plotting parameters for 3
-  pathways. For details do \code{demo.paths); demo.paths};
+  pathways. For details do:
+
+  \code{demo.paths); demo.paths}
   
   gse16873.d is a numeric matrix with over 10000 rows (genes) and 2
-  columns (samples). For details do \code{data(gse16873.d);
-    str(gse16873.d)}.
+  columns (samples). For details do:
+  \code{data(gse16873.d); str(gse16873.d)}.
 }
 \source{
   http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE16873

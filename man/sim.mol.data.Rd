@@ -10,8 +10,8 @@ different ID types, molecule numbers, sample sizes, either
 continuous or discrete.
 }
 \usage{
-sim.mol.data(mol.type = c("gene", "gene.ko", "cpd")[1], id.type = NULL, discrete =
-FALSE, nmol = 1000, nexp = 1, rand.seed=100)
+sim.mol.data(mol.type = c("gene", "gene.ko", "cpd")[1], id.type = NULL,
+species="hsa", discrete = FALSE, nmol = 1000, nexp = 1, rand.seed=100)
 }
 
 \arguments{
@@ -23,14 +23,25 @@ transcripts, proteins), or "gene.ko" (KEGG ortholog genes, as defined in
   \code{pathview}. Default mol.type="gene".
 }
   \item{id.type}{
-character of length 1, the molecular ID type. When mol="gene", proper ID
-  types include "ENTREZ" (Entrez Gene), also check
-  \code{data(gene.idtype.list); gene.idtype.list} for
+    character of length 1, the molecular ID type. When mol.type="gene",
+  proper ID types include "KEGG" and "ENTREZ" (Entrez Gene). Other ID
+  types are also valid When species="hsa" only, check:
+
+    \code{data(gene.idtype.list); gene.idtype.list} for
   other valid ID types. When mol.type="cpd", check \code{data(cpd.simtypes);
   cpd.simtypes} for valid ID types. Default id.type=NULL, then "Entrez" and
   "KEGG COMPOUND accession" will be assumed for mol.type = "gene" or
   "cpd".
 }
+  \item{species}{
+character, either the kegg code, scientific name or the common name of
+the target species. This is only effective when mol.type =
+  "gene". Setting species="ko" is equilvalent to
+  mol.type="gene.ko". Default species="hsa", equivalent to either "Homo
+  sapiens" (scientific name) or "human" (common name), gene data id.type
+  has multiple other choices. When other species are specified, gene id.type
+  is limited to "KEGG" and "ENTREZ".
+  }
   \item{discrete}{
 logical, whether to generate discrete or continuous data. d
   discrete=FALSE, otherwise, mol.data will be a charactor vector of
@@ -70,7 +81,8 @@ This function is written mainly for simulation or experiment with
 }
 \references{
   Luo, W. and Brouwer, C., Pathview: an R/Bioconductor package for
-  pathway based data integration and visualization. submitted, 2013.
+  pathway based data integration and visualization. Bioinformatics,
+ 2013, 29(14): 1830-1831, doi: 10.1093/bioinformatics/btt285
 }
 \author{
   Weijun Luo <luo_weijun@yahoo.com>

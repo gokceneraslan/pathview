@@ -6,9 +6,10 @@ citEntry(entry="article",
   journal = 	 "Bioinformatics",
   year = 	 "2013",
   doi = "10.1093/bioinformatics/btt285",
-  volume = 	 "",
-  pages = 	 "",
-  textVersion = "Luo, W. and Brouwer C., Pathview: an R/Bioconductor package for pathway-based data integration and visualization. Bioinformatics 2013, doi: 10.1093/bioinformatics/btt285"
+  volume = 	 "29",
+  number = 	 "14", 
+  pages = 	 "1830-1831",
+  textVersion = "Luo, W. and Brouwer C., Pathview: an R/Bioconductor package for pathway-based data integration and visualization. Bioinformatics, 2013, 29(14): 1830-1831, doi: 10.1093/bioinformatics/btt285"
 )
 
 citFooter("This free open-source software implements academic research

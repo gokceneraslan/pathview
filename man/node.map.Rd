@@ -9,7 +9,9 @@ Map molecular data onto KEGG pathway nodes
   abundance etc)to nodes in KEGG pathway. 
 }
 \usage{
-node.map(mol.data = NULL, node.data, node.types = c("gene", "ortholog", "compound")[1], node.sum = c("sum", "mean", "median", "max", "max.abs", "random")[1])
+node.map(mol.data = NULL, node.data, node.types = c("gene", "ortholog",
+"compound")[1], node.sum = c("sum", "mean", "median", "max", "max.abs",
+"random")[1], entrez.gnodes=TRUE)
 }
 \arguments{
   \item{mol.data}{
@@ -34,6 +36,13 @@ character, sepcify the node type to map the mol.data to, either "gene",
   character, the method name to calculate node summary given that
   multiple genes or compounds are mapped to it. Poential options include
   "sum","mean", "median", "max", "max.abs" and "random". Default node.sum="sum".
+}
+  \item{entrez.gnodes}{
+  logical, whether EntrezGene (NCBI GeneID) is used as the default gene
+  ID in the KEGG data files. This is needed because KEGG uses different
+  types default gene ID for different species. Some most common model
+  species use EntrezGene, but majority of others use Locus tag. Default
+  entrez.gnodes=TRUE.
 }
 }
 \details{
@@ -76,7 +85,8 @@ mapped, but all nodes of the specified node.type are considered
 }
 \references{
   Luo, W. and Brouwer, C., Pathview: an R/Bioconductor package for
-  pathway based data integration and visualization. submitted, 2013.
+  pathway based data integration and visualization. Bioinformatics,
+ 2013, 29(14): 1830-1831, doi: 10.1093/bioinformatics/btt285
 }
 \author{
   Weijun Luo <luo_weijun@yahoo.com>

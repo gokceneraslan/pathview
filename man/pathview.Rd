@@ -20,11 +20,39 @@ functions, and pathview is the main function providing a unified
 interface to downloader, parser, mapper and viewer functions.
 }
 \usage{
-pathview(gene.data = NULL, cpd.data = NULL, xml.file = NULL, pathway.id, species = "hsa", kegg.dir = ".", cpd.idtype = "kegg", gene.idtype = "entrez", gene.annotpkg = NULL, min.nnodes = 3, kegg.native = TRUE, map.null = TRUE, expand.node = FALSE, split.group = FALSE, map.symbol = TRUE, map.cpdname = TRUE, node.sum = "sum", discrete=list(gene=FALSE, cpd=FALSE), limit = list(gene = 1, cpd = 1), bins = list(gene = 10, cpd = 10), both.dirs = list(gene = T, cpd = T), trans.fun = list(gene = NULL, cpd = NULL), low = list(gene = "green", cpd = "blue"), mid = list(gene = "gray", cpd = "gray"), high = list(gene = "red", cpd = "yellow"), na.col = "transparent", ...)
+pathview(gene.data = NULL, cpd.data = NULL, xml.file = NULL, pathway.id,
+species = "hsa", kegg.dir = ".", cpd.idtype = "kegg", gene.idtype =
+"entrez", gene.annotpkg = NULL, min.nnodes = 3, kegg.native = TRUE,
+map.null = TRUE, expand.node = FALSE, split.group = FALSE, map.symbol =
+TRUE, map.cpdname = TRUE, node.sum = "sum", discrete=list(gene=FALSE,
+cpd=FALSE), limit = list(gene = 1, cpd = 1), bins = list(gene = 10, cpd
+= 10), both.dirs = list(gene = T, cpd = T), trans.fun = list(gene =
+NULL, cpd = NULL), low = list(gene = "green", cpd = "blue"), mid =
+list(gene = "gray", cpd = "gray"), high = list(gene = "red", cpd =
+"yellow"), na.col = "transparent", ...)
 
-keggview.native(plot.data.gene = NULL, plot.data.cpd = NULL, cols.ts.gene = NULL, cols.ts.cpd = NULL, node.data, pathway.name, out.suffix = "pathview", kegg.dir = ".", match.data = TRUE, same.layer = TRUE, res = 300, cex = 0.25, discrete=list(gene=FALSE, cpd=FALSE), limit = list(gene = 1, cpd = 1), bins = list(gene = 10, cpd = 10), both.dirs = list(gene = T, cpd = T), low = list(gene = "green", cpd = "blue"), mid = list(gene = "gray", cpd = "gray"), high = list(gene = "red", cpd = "yellow"), na.col = "transparent", new.signature = TRUE, plot.col.key = TRUE, key.align = "x", key.pos = "topright", ...)
+keggview.native(plot.data.gene = NULL, plot.data.cpd = NULL,
+cols.ts.gene = NULL, cols.ts.cpd = NULL, node.data, pathway.name,
+out.suffix = "pathview", kegg.dir = ".", match.data = TRUE, same.layer =
+TRUE, res = 300, cex = 0.25, discrete=list(gene=FALSE, cpd=FALSE), limit
+= list(gene = 1, cpd = 1), bins = list(gene = 10, cpd = 10), both.dirs =
+list(gene = T, cpd = T), low = list(gene = "green", cpd = "blue"), mid =
+list(gene = "gray", cpd = "gray"), high = list(gene = "red", cpd =
+"yellow"), na.col = "transparent", new.signature = TRUE, plot.col.key =
+TRUE, key.align = "x", key.pos = "topright", ...)
 
-keggview.graph(plot.data.gene = NULL, plot.data.cpd = NULL, cols.ts.gene = NULL, cols.ts.cpd = NULL, node.data, path.graph, pathway.name, out.suffix = "pathview", pdf.size = c(7, 7), same.layer = TRUE, match.data = TRUE, rankdir = c("LR", "TB")[1], is.signal = TRUE, split.group = F, afactor = 1, text.width = 15, cex = 0.5, map.cpdname = FALSE, cpd.lab.offset = 1.0, discrete=list(gene=FALSE, cpd=FALSE), limit = list(gene = 1, cpd = 1), bins = list(gene = 10, cpd = 10), both.dirs = list(gene = T, cpd = T), low = list(gene = "green", cpd = "blue"), mid = list(gene = "gray", cpd = "gray"), high = list(gene = "red", cpd = "yellow"), na.col = "transparent", new.signature = TRUE, plot.col.key = TRUE, key.align = "x", key.pos = "topright", sign.pos = "bottomright", ...)
+keggview.graph(plot.data.gene = NULL, plot.data.cpd = NULL, cols.ts.gene
+= NULL, cols.ts.cpd = NULL, node.data, path.graph, pathway.name,
+out.suffix = "pathview", pdf.size = c(7, 7), same.layer = TRUE,
+match.data = TRUE, rankdir = c("LR", "TB")[1], is.signal = TRUE,
+split.group = F, afactor = 1, text.width = 15, cex = 0.5, map.cpdname =
+FALSE, cpd.lab.offset = 1.0, discrete=list(gene=FALSE, cpd=FALSE), limit
+= list(gene = 1, cpd = 1), bins = list(gene = 10, cpd = 10), both.dirs =
+list(gene = T, cpd = T), low = list(gene = "green", cpd = "blue"), mid =
+list(gene = "gray", cpd = "gray"), high = list(gene = "red", cpd =
+"yellow"), na.col = "transparent", new.signature = TRUE, plot.col.key =
+TRUE, key.align = "x", key.pos = "topright", sign.pos = "bottomright",
+...)
 }
 
 \arguments{
@@ -158,7 +186,7 @@ directional data when converting them to pseudo colors. Default limit=list(gene=
 a list of two function (not character) elements with "gene" and "cpd" as the names. This
 argument specifies whether and how gene.data and cpd.data are
 transformed. Examples are \code{log}, \code{abs} or users' own
-functions. Default limit=list(gene=NULL, cpd=NULL).
+functions. Default limit=list( gene=NULL, cpd=NULL).
 }
   \item{low, mid, high}{
 each is a list of two colors with "gene" and "cpd" as the names. This
@@ -240,7 +268,7 @@ logical, whether gene.data or cpd.data should be paired up by recyling
 }
   \item{plot.col.key}{
     logical, whether color key is added to the pathway
-  graphs. Default plot.col.key=TRUE.
+  graphs. Default plot.col.key= TRUE.
 
 }
   \item{key.align}{
@@ -289,7 +317,7 @@ kegg.native=FALSE. Default afctor=1.
 }
   \item{text.width}{
 numeric, specifying the line width for text wrap. Only effective when
-kegg.native=FALSE. Default text.width=15 (characters).
+kegg.native= FALSE. Default text.width=15 (characters).
 }
   \item{cpd.lab.offset}{
 numeric, specifying how much compound labels should be put above the

@@ -10,7 +10,7 @@ function(
                    gene.idtype="entrez",
                    gene.annotpkg=NULL,
                    min.nnodes=3,#
-
+         
                    kegg.native=TRUE,
                    map.null=TRUE,
                    expand.node=FALSE, #g
@@ -43,13 +43,16 @@ function(
     names(gene.data)=gd.names
     both.dirs$gene=FALSE
     ng=length(gene.data)
+    nsamp.g=1
   } else if(!is.null(gene.data)){
     if(length(dim(gene.data))==2){
       gd.names=rownames(gene.data)
       ng=nrow(gene.data)
+      nsamp.g=2
     } else if(is.numeric(gene.data) & is.null(dim(gene.data))){
       gd.names=names(gene.data)
       ng=length(gene.data)
+      nsamp.g=1
     } else stop("wrong gene.data format!")
   } else if(is.null(cpd.data)){
     stop("gene.data and cpd.data are both NULL!")
@@ -57,15 +60,49 @@ function(
   gene.idtype=toupper(gene.idtype)
   data(bods)
   data(gene.idtype.list)
-  if(species!="ko") species=kegg.species.code(species, na.rm=T)
+  if(species!="ko"){
+    species.data=kegg.species.code(species, na.rm=T, code.only=FALSE)
+  } else {
+    species.data=c(kegg.code="ko", entrez.gnodes="0", kegg.geneid="K01488", ncbi.geneid="")
+    gene.idtype="KEGG"
+    msg.fmt="Only KEGG ortholog gene ID is supported, make sure it looks like \"%s\"!"
+    msg=sprintf(msg.fmt, species.data["kegg.geneid"])
+    message(msg)
+  }
+  if(length(dim(species.data))==2) {
+    message("More than two valide species!")
+    species.data=species.data[1,]
+  }
+  species=species.data["kegg.code"]
+  entrez.gnodes=species.data["entrez.gnodes"]==1
+  if(is.na(species.data["ncbi.geneid"])){
+    if(!is.na(species.data["kegg.geneid"])){
+      msg.fmt="Only native KEGG gene ID is supported for this species,\nmake sure it looks like \"%s\"!"
+      msg=sprintf(msg.fmt, species.data["kegg.geneid"])
+      message(msg)
+    } else{
+      stop("This species is not annotated in KEGG!")
+    }
+  }
   if(is.null(gene.annotpkg)) gene.annotpkg=bods[match(species, bods[,3]),1]
-  if(length(grep("ENTREZ", gene.idtype))<1 & !is.null(gene.data)){
+  if(length(grep("ENTREZ|KEGG", gene.idtype))<1 & !is.null(gene.data)){
     if(is.na(gene.annotpkg)) stop("No proper gene annotation package available!")
     if(!gene.idtype %in% gene.idtype.list) stop("Wrong input gene ID type!")
     gene.idmap=id2eg(gd.names, category=gene.idtype, pkg.name=gene.annotpkg)
     gene.data=mol.sum(gene.data, gene.idmap)
+    gene.idtype="ENTREZ"
   }
-                                        
+  if(gene.idtype=="ENTREZ" & !entrez.gnodes & !is.null(gene.data)){
+    message("Getting gene ID data from KEGG...")
+    gene.idmap=keggConv("ncbi-geneid", species)
+    message("Done with data retrieval!")
+    kegg.ids=gsub(paste(species, ":", sep=""), "", names(gene.idmap))
+    ncbi.ids=gsub("ncbi-geneid:", "", gene.idmap)
+    gene.idmap=cbind(ncbi.ids, kegg.ids)
+    gene.data=mol.sum(gene.data, gene.idmap)
+    gene.idtype="KEGG"
+  }
+
   
   if(is.character(cpd.data)){
     cpdd.names=cpd.data
@@ -146,14 +183,16 @@ function(
 
   if(species=="ko") gene.node.type="ortholog" else gene.node.type="gene"
   if((!is.null(gene.data) |map.null) & sum(node.data$type==gene.node.type)>1){
-    plot.data.gene=node.map(gene.data, node.data, node.types=gene.node.type, node.sum=node.sum)
-    if(map.symbol & species!="ko") {
-                                        
+    plot.data.gene=node.map(gene.data, node.data, node.types=gene.node.type, node.sum=node.sum, entrez.gnodes=entrez.gnodes)
+    kng=plot.data.gene$kegg.names
+    kng.char=gsub("[0-9]", "", unlist(kng))
+    if(any(kng.char>"")) entrez.gnodes=FALSE
+    if(map.symbol & species!="ko" & entrez.gnodes) {
               if(is.na(gene.annotpkg)) {
                 warm.fmt="No annotation package for the species %s, gene symbols not mapped!"
                 warm.msg=sprintf(warm.fmt, species)
                 message(warm.msg)
-              } else{
+              } else {
                 plot.data.gene$labels=eg2id(as.character(plot.data.gene$kegg.names), category="SYMBOL", pkg.name=gene.annotpkg)[,2]
                 mapped.gnodes=rownames(plot.data.gene)
                 node.data$labels[mapped.gnodes]=plot.data.gene$labels

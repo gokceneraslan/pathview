@@ -1,5 +1,5 @@
 node.map <-
-function(mol.data=NULL, node.data, node.types=c("gene", "ortholog", "compound")[1], node.sum =c("sum","mean", "median", "max", "max.abs", "random")[1]){
+function(mol.data=NULL, node.data, node.types=c("gene", "ortholog", "compound")[1], node.sum =c("sum","mean", "median", "max", "max.abs", "random")[1], entrez.gnodes=TRUE){
 type.sel=node.data$type %in% node.types
 if(sum(type.sel)<1){
   message("No specified node types in the pathway!")
@@ -9,56 +9,68 @@ if(sum(type.sel)<1){
 node.data=lapply(node.data, "[", type.sel)
 n.nodes=length(node.data$kegg.names)
 spacials=as.matrix(as.data.frame(node.data[c("type", "x", "y", "width", "height")]))
+if(node.types[1]=="gene"){
+kng=node.data$kegg.names[node.data$type=="gene"]
+kng.char=gsub("[0-9]", "", unlist(kng))
+if(any(kng.char>"")) entrez.gnodes=FALSE
+}
 
-if(is.null(mol.data)){
-    plot.data=sapply(1:n.nodes, function(i){
+na.plot.data=function(){
+    sapply(1:n.nodes, function(i){
       kns=node.data$kegg.names[[i]]
-    if(node.types[1]=="gene") items=as.numeric(kns)
-      else items=kns
+    if(node.types[1]=="gene" & entrez.gnodes) items=as.numeric(kns)
+    else items=kns
     ord=order(items)
     items=items[ord]
      kns=kns[ord]
       return(c(kns[1], spacials[i,], NA))
     })
-  } else{
+  }
+
+if(is.null(mol.data)){
+  plot.data=na.plot.data()
+} else{
   
 #map gene data  
-if(is.character(mol.data)){
-gd.names=mol.data
-mol.data=rep(1, length(mol.data))
-names(mol.data)=gd.names
-}
-mol.data=cbind(mol.data)
+    if(is.character(mol.data)){
+      gd.names=mol.data
+      mol.data=rep(1, length(mol.data))
+      names(mol.data)=gd.names
+    }
+    mol.data=cbind(mol.data)
 
-  if(is.null(colnames(mol.data))) colnames(mol.data)=paste("ge", 1:ncol(mol.data),sep="")
-  genes <- intersect(unlist(node.data$kegg.names), row.names(mol.data))
-#mol.data=as.data.frame(mol.data)
-#warning message: NAs introduced by coercion, wnen compound or non-gene type node
-  if(node.types[1]=="gene") genes =as.numeric(genes)
+    if(is.null(colnames(mol.data))) colnames(mol.data)=paste("ge", 1:ncol(mol.data),sep="")
+    mapped.mols <- intersect(unlist(node.data$kegg.names), row.names(mol.data))
+    if(length(mapped.mols)==0){
+      message(paste("No of the genes or compounds mapped to the pathway!",
+                    "Argument gene.idtype or cpd.idtype may be wrong.", sep="\n"))
+      plot.data=na.plot.data()
+    } else{
+      if(node.types[1]=="gene" & entrez.gnodes) mapped.mols =as.numeric(mapped.mols)
 
 
-    plot.data=sapply(1:n.nodes, function(i){
-      kns=node.data$kegg.names[[i]]
-    if(node.types[1]=="gene") items=as.numeric(kns)
-      else items=kns
-    ord=order(items)
-    items=items[ord]
-     kns=kns[ord]
-    hit=items %in% genes 
-    if(sum(hit)==0) {
-      return(c(kns[1], spacials[i,], rep(NA, ncol(mol.data))))
-    } else if(sum(hit)==1) {
-      edata=mol.data[as.character(items[hit]),]
-      return(c(kns[hit], spacials[i,], edata))
-    } else {
-      node.sum=eval(as.name(node.sum))
-#      edata=apply(cbind(mol.data[as.character(items[hit]),]), 2, node.sum, na.rm=T)
-      edata=apply(cbind(mol.data[as.character(items[hit]),]), 2, node.sum, na.rm=T)
-      return(c(kns[hit][1], spacials[i,], edata))
-    }    
-  })
-}
-
+      plot.data=sapply(1:n.nodes, function(i){
+        kns=node.data$kegg.names[[i]]
+        if(node.types[1]=="gene" & entrez.gnodes) items=as.numeric(kns)
+        else items=kns
+        ord=order(items)
+        items=items[ord]
+        kns=kns[ord]
+        hit=items %in% mapped.mols 
+        if(sum(hit)==0) {
+          return(c(kns[1], spacials[i,], rep(NA, ncol(mol.data))))
+        } else if(sum(hit)==1) {
+          edata=mol.data[as.character(items[hit]),]
+          return(c(kns[hit], spacials[i,], edata))
+        } else {
+          node.sum=eval(as.name(node.sum))
+                                        #      edata=apply(cbind(mol.data[as.character(items[hit]),]), 2, node.sum, na.rm=T)
+          edata=apply(cbind(mol.data[as.character(items[hit]),]), 2, node.sum, na.rm=T)
+          return(c(kns[hit][1], spacials[i,], edata))
+        }    
+      })
+    }
+  }
 colnames(plot.data)=names(node.data$kegg.names)
 plot.data=as.data.frame(t(plot.data), stringsAsFactors = F)
   plot.data$labels=node.data$labels

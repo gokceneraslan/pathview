@@ -8,7 +8,7 @@
   This function maps species name to KEGG code.
 }
 \usage{
-kegg.species.code(species = "hsa", na.rm = FALSE)
+kegg.species.code(species = "hsa", na.rm = FALSE, code.only = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,13 +20,18 @@ the target species. Default species="hsa", it is equivalent to use either
   \item{na.rm}{
 logical, should unmapped entris be removed. Default na.rm = FALSE.
 }
+  \item{code.only}{
+logical, whether to extract KEGG species code only or with gene ID usage
+info too. Default , code.only = TRUE.
+}
 }
 \value{
   a character vector of mapped KEGG code of species.
 }
 \references{
   Luo, W. and Brouwer, C., Pathview: an R/Bioconductor package for
-  pathway based data integration and visualization. submitted, 2013.
+  pathway based data integration and visualization. Bioinformatics,
+ 2013, 29(14): 1830-1831, doi: 10.1093/bioinformatics/btt285
 }
 \author{
   Weijun Luo <luo_weijun@yahoo.com>

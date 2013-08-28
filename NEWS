@@ -1,3 +1,12 @@
+VERSION 1.1.5
+-------------
+  o Pathview works with species where default KEGG gene ID is not
+    Entrez Gene. Several functions and data objects are revised: 
+    including pathview, node.map, sim.mol.data, kegg.species.code,
+    korg. New section on KEGG species and Gene ID usage with working
+     exampleshas been added.
+
+
 VERSION 1.1.3
 -------------
   o Pathview paper published in Bioinformatics

@@ -14,8 +14,13 @@ or metabolite etc) data as pseudo colors on pathway nodes.
 pathway graph.
 }
 \usage{
-node.color(plot.data = NULL, discrete=FALSE, limit, bins, both.dirs = TRUE, low = "green", mid = "gray", high = "red", na.col = "transparent", trans.fun = NULL)
-col.key(discrete=FALSE, limit = 1, bins = 10, cols = NULL, both.dirs = TRUE, low = "green", mid = "gray", high = "red", graph.size, node.size, size.by.graph = TRUE, key.pos = "topright", off.sets = c(x = 0, y = 0), align = "n", cex = 1, lwd = 1)
+node.color(plot.data = NULL, discrete=FALSE, limit, bins, both.dirs =
+TRUE, low = "green", mid = "gray", high = "red", na.col = "transparent",
+trans.fun = NULL)
+col.key(discrete=FALSE, limit = 1, bins = 10, cols = NULL, both.dirs =
+TRUE, low = "green", mid = "gray", high = "red", graph.size, node.size,
+size.by.graph = TRUE, key.pos = "topright", off.sets = c(x = 0, y = 0),
+align = "n", cex = 1, lwd = 1)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -52,7 +57,7 @@ directional data when converting them to pseudo colors. Default limit=list(gene=
 a list of two function (not character) elements with "gene" and "cpd" as the names. This
 argument specifies whether and how gene.data and cpd.data are
 transformed. Examples are \code{log}, \code{abs} or users' own
-functions. Default limit=list(gene=NULL, cpd=NULL).
+functions. Default limit=list( gene=NULL, cpd=NULL).
 }
   \item{low, mid, high}{
 each is a list of two colors with "gene" and "cpd" as the names. This
@@ -131,7 +136,8 @@ a updated version of off.sets for the reference of next color key.
 }
 \references{
   Luo, W. and Brouwer, C., Pathview: an R/Bioconductor package for
-  pathway based data integration and visualization. submitted, 2013.
+  pathway based data integration and visualization. Bioinformatics,
+ 2013, 29(14): 1830-1831, doi: 10.1093/bioinformatics/btt285
 }
 \author{
   Weijun Luo <luo_weijun@yahoo.com>

@@ -42,7 +42,7 @@ character, the output ID type, needs to be either "KEGG" or one of the
   compound-related ID types used in CHEMBL database. For a full list of
   the CHEMBL IDs, do \code{data(rn.list); names(rn.list)}.
 
-  KEGG has its own compound ID system, including compound/glycan/durg
+  KEGG has its own compound ID system, including compound (glycan/durg)
   accessions.  Therefore, all compound
 data need to be mapped to KEGG accessions when working with KEGG
 pathways. Function \code{cpd2kegg} does this mapping by calling
@@ -63,7 +63,8 @@ the target ID type.
 }
 \references{
   Luo, W. and Brouwer, C., Pathview: an R/Bioconductor package for
-  pathway based data integration and visualization. submitted, 2013.
+  pathway based data integration and visualization. Bioinformatics,
+ 2013, 29(14): 1830-1831, doi: 10.1093/bioinformatics/btt285
 }
 \author{
   Weijun Luo <luo_weijun@yahoo.com>

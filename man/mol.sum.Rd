@@ -12,7 +12,8 @@ integrate, analyze or visualize the "standardized" data with pathways or
 functional categories.
 }
 \usage{
-mol.sum(mol.data, id.map, gene.annotpkg = "org.Hs.eg.db", sum.method = c("sum", "mean", "median", "max", "max.abs", "random")[1])
+mol.sum(mol.data, id.map, gene.annotpkg = "org.Hs.eg.db", sum.method =
+c("sum", "mean", "median", "max", "max.abs", "random")[1])
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -64,7 +65,8 @@ mol.data except row names are standard molecular IDs.
 }
 \references{
   Luo, W. and Brouwer, C., Pathview: an R/Bioconductor package for
-  pathway based data integration and visualization. submitted, 2013.
+  pathway based data integration and visualization. Bioinformatics,
+ 2013, 29(14): 1830-1831, doi: 10.1093/bioinformatics/btt285
 }
 \author{
   Weijun Luo <luo_weijun@yahoo.com>

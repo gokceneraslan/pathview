@@ -1,5 +1,6 @@
 import(
        Rgraphviz,
+       KEGGREST,
        methods
        )
 
