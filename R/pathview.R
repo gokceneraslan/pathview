@@ -150,35 +150,34 @@ function(
   }
 
   if(missing(xml.file)) xml.file <- paste(kegg.dir, "/", pathway.name,
-            ".xml", sep = "")
+                                          ".xml", sep = "")
   if(kegg.native){
-  node.data=try(node.info(xml.file), silent=T)
-  if(class(node.data)=="try-error"){
-    warn.msg=sprintf(warn.fmt, xml.file)
-    message(warn.msg)
-    return(invisible(0))
+    node.data=try(node.info(xml.file), silent=T)
+    if(class(node.data)=="try-error"){
+      warn.msg=sprintf(warn.fmt, xml.file)
+      message(warn.msg)
+      return(invisible(0))
+    }
+    node.type=c("gene","enzyme", "compound", "ortholog")
+    sel.idx=node.data$type %in% node.type
+    nna.idx=!is.na(node.data$x+node.data$y+node.data$width+node.data$height)
+    sel.idx=sel.idx & nna.idx
+    if(sum(sel.idx)<min.nnodes){
+      warn.fmt="Number of mappable nodes is below %d, %s skipped!"
+      warn.msg=sprintf(warn.fmt, min.nnodes, pathway.name)
+      message(warn.msg)
+      return(invisible(0))
+    }
+    node.data=lapply(node.data, "[", sel.idx)
+  } else {
+    gR1=try(parseKGML2Graph2(xml.file, genes=F, expand=expand.node, split.group=split.group), silent=T)
+    node.data=try(node.info(gR1), silent=T)
+    if(class(node.data)=="try-error"){
+      warn.msg=sprintf(warn.fmt, xml.file)
+      message(warn.msg)
+      return(invisible(0))
+    }
   }
-  node.type=c("gene","enzyme", "compound", "ortholog")
-  sel.idx=node.data$type %in% node.type
-  nna.idx=!is.na(node.data$x+node.data$y+node.data$width+node.data$height)
-  sel.idx=sel.idx & nna.idx
-  if(sum(sel.idx)<min.nnodes){
-    warn.fmt="Number of mappable nodes is below %d, %s skipped!"
-    warn.msg=sprintf(warn.fmt, min.nnodes, pathway.name)
-    message(warn.msg)
-    return(invisible(0))
-  }
-  node.data=lapply(node.data, "[", sel.idx)
-} else {
-  gR1=try(parseKGML2Graph2(xml.file, genes=F, expand=expand.node, split.group=split.group), silent=T)
-  node.data=try(node.info(gR1), silent=T)
-  if(class(node.data)=="try-error"){
-    warn.msg=sprintf(warn.fmt, xml.file)
-    message(warn.msg)
-    return(invisible(0))
-  }
-}
-
 
 
   if(species=="ko") gene.node.type="ortholog" else gene.node.type="gene"
