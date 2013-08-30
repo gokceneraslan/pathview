@@ -389,21 +389,32 @@ pv.out <- pathview(gene.data = gene.entrez, cpd.data = cpd.kc,
     limit = list(gene = 3, cpd = 3), bins = list(gene = 6, cpd = 6))
 @ 
 
+\section{Working with species}
+\label{sec:species}
 Species is a tricky yet important issue when working with KEGG. KEGG has its own dedicated nomenclature and database for species, which includes over 2000 organisms with complete genomes. In other words, gene data for any of these organisms can be mapped, visualized and analyzed using \Rpackage{pathview}. This comprehensive species coverage is a prominent feature of \Rpackage{pathview}'s data integration capacity. However, KEGG does not treat all of these organisms/genomes the same way. KEGG use NCBI GeneID (or Entrez Gene) as the default ID for the most common model animals, including human, mouse, rat etc and a few crops, e.g. soybean, wine grape and maize. On the other hand, KEGG uses Locus tag and other IDs for all others organisms, including animals, plants, fungi, protists, as well as bacteria and archaea.
 
 \Rpackage{Pathview} carries a data matrix \R{korg}, which includes a complete list of supported KEGG species and default gene IDs. Let's explore \R{korg} data matrix as to have some idea on KEGG species and its Gene ID usage.
 <<korg, echo=TRUE>>=
+data(korg)
 head(korg)
 #number of species which use Entrez Gene as the default ID
 sum(korg[,"entrez.gnodes"]=="1")
-#number of species which use other ID types as the default ID
+#number of species which use other ID types or none as the default ID
 sum(korg[,"entrez.gnodes"]=="0")
 #species which do not have Entrez Gene annotation at all
 na.idx=is.na(korg[,"ncbi.geneid"])
 korg[na.idx,]
 @ 
 
-All previous examples shows human data, where Entrez Gene is KEGG's default gene ID. \Rpackage{Pathview} now (since version 1.1.5) explicitly handles species which use Locus tag or other gene IDs as the KEGG default ID. Below are an couple of examples with E coli strain K12 data. First, we work on gene data with the default KEGG ID (Locus tag) for E coli K12.
+From the exploration of \R{korg} above, we see that out of the 2299 KEGG species, 3 don't have any gene ID (annotation) and 6 not have NCBI (Entrez) Gene ID. Almost all of them have both default KEGG gene ID (often Locus tag) and Entrez Gene ID annotation. Therefore, \R{pathview} accepts \R{gene.idtype="kegg"} or \R{"Entrez"} (case insensitive) for all these species. The users need to make sure the right \R{gene.idtype} is specified because KEGG and Entrez Gene IDs are not the same except for 35 common species. For 19 species, Bioconductor provides gene annotation packages. The users have the freedom to input \R{gene.data} with other \R{gene.idtype}'s. For a list of these Bioconductor annotated species and extra Gene ID types allowed:
+<<bods_gene.idtype.list, echo=TRUE>>=
+data(bods)
+bods
+data(gene.idtype.list)
+gene.idtype.list
+@ 
+
+All previous examples show human data, where Entrez Gene is KEGG's default gene ID. \Rpackage{Pathview} now (since version 1.1.5) explicitly handles species which use Locus tag or other gene IDs as the KEGG default ID. Below are an couple of examples with E coli strain K12 data. First, we work on gene data with the default KEGG ID (Locus tag) for E coli K12.
 <<eco.dat.kegg, echo=TRUE>>=
 eco.dat.kegg <- sim.mol.data(mol.type="gene",id.type="kegg",species="eco",nmol=3000)
 head(eco.dat.kegg)
@@ -412,9 +423,17 @@ pv.out <- pathview(gene.data = eco.dat.kegg, gene.idtype="kegg",
     kegg.native = T, same.layer=T)
 @ 
 
-Then, we work on E coli gene data with ID types other than the default KEGG ID, for example, official gene symbols. When calling \R{pathview}, such data need to be mapped to Entrez Gene ID first (if not yet), then to default KEGG ID (Locus tag). Therefore, it takes longer time than the last example.
-<<eco.dat.symbol, echo=TRUE, eval=FALSE>>=
+We may also work on gene data with Entrez Gene ID for E coli K12 the same way as for human.
+<<eco.dat.kegg, echo=TRUE>>=
 eco.dat.entrez <- sim.mol.data(mol.type="gene",id.type="entrez",species="eco",nmol=3000)
+head(eco.dat.entrez)
+pv.out <- pathview(gene.data = eco.dat.entrez, gene.idtype="entrez",
+    pathway.id = "00640", species = "eco", out.suffix = "eco.entrez",
+    kegg.native = T, same.layer=T)
+@ 
+
+Based on the \R{bods} data described above, E coli K12 is an Bioconductor annotated species. Hence we may further work on its gene data with other ID types, for example, official gene symbols. When calling \R{pathview}, such data need to be mapped to Entrez Gene ID first (if not yet), then to default KEGG ID (Locus tag). Therefore, it takes longer time than the last example.
+<<eco.dat.symbol, echo=TRUE, eval=FALSE>>=
 egid.eco=eg2id(names(eco.dat.entrez), category="symbol", pkg="org.EcK12.eg.db")
 eco.dat.symbol <- eco.dat.entrez
 names(eco.dat.symbol) <- egid.eco[,2]
@@ -422,7 +441,7 @@ head(eco.dat.kegg)
 pv.out <- pathview(gene.data = eco.dat.symbol, gene.idtype="symbol",
     pathway.id = "00640", species = "eco", out.suffix = "eco.symbol.2layer",
     kegg.native = T, same.layer=F)
-@ 
+@
 
 Importantly, \Rpackage{pathview} can be directly used for metagenomic or microbiome data when the data are mapped to KEGG ortholog pathways. And data from any new species that has not been annotated and included in KEGG (non-KEGG species) can also been analyzed and visualized using \Rpackage{pathview} by mapping to KEGG ortholog pathways the same way. In the next example, we simulate the mapped KEGG ortholog gene data first. Then the data is input as \R{gene.data} with \R{species="ko"}. Check \R{pathview} function for details.
 <<gene.ensprot_cpd.cas.manual.map, echo=TRUE>>=
