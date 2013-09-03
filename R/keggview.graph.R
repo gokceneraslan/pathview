@@ -182,15 +182,6 @@ keggview.graph <-function(
   labs[nNames[map.idx]]=sapply(labs[nNames[map.idx]],wordwrap,width=text.width, break.word=F)
   labs[nNames[cpd.idx]]=sapply(labs[nNames[cpd.idx]],wordwrap,width=text.width, break.word=T)
 
-  if(sum(cpd.idx)>0){
-    ell.col=fillcol[cpd.idx]
-    ell.col[ell.col==na.col]=NA
-    w.e=min(nri$lWidth[cpd.idx])
-    h.e=min(nri$height[cpd.idx])
-    xloc.e=loc[[1]][cpd.idx]
-    yloc.e=loc[[2]][cpd.idx]
-  }
-
 
   cols.ts.gene=cbind(cols.ts.gene)
   cols.ts.cpd=cbind(cols.ts.cpd)
@@ -224,16 +215,29 @@ keggview.graph <-function(
   out.msg=sprintf(out.fmt, wdir)
   message(out.msg)
   out.fmt="Writing image file %s"
-  
+#initialize node colors
+  if(sum(rect.idx)>0){
+    cn.col=fillcol[sub2grp[sub.idx,1]]
+    rect.col=c(cn.col,fillcol[nSizes==1 & rect.idx])
+    rect.col[rect.col==na.col]=NA
+  }
+  if(sum(cpd.idx)>0){
+    ell.col=fillcol[cpd.idx]
+    ell.col[ell.col==na.col]=NA
+    w.e=min(nri$lWidth[cpd.idx])
+    h.e=min(nri$height[cpd.idx])
+    xloc.e=loc[[1]][cpd.idx]
+    yloc.e=loc[[2]][cpd.idx]
+  }
+
+
 for(np in 1:nplots){
   if(!is.null(cols.ts.gene) & nc.gene>=np){
     fillcol[nidx.gene]=cols.ts.gene[cidx.gene,np] #need to be added in pathview.graph
-#  vector indexing gets NA instead of out-of-bound error
-#   if(is.null(sub.grp))  get NULL or character(0)
     cn.col=cols.ts.gene[,np][sub2grp[sub.idx,1]]
-  } else cn.col[sci.gene]=fillcol[sub2grp[sub.idx,1]]
-  rect.col=c(cn.col,fillcol[nSizes==1 & rect.idx])
-  rect.col[rect.col==na.col]=NA
+    rect.col=c(cn.col,fillcol[nSizes==1 & rect.idx])
+    rect.col[rect.col==na.col]=NA
+  }
 
   if(!is.null(cols.ts.cpd) & nc.cpd>=np){
     fillcol[nidx.cpd]=cols.ts.cpd[cidx.cpd,np]
