@@ -33,39 +33,39 @@ list(gene = "gray", cpd = "gray"), high = list(gene = "red", cpd =
 
 keggview.native(plot.data.gene = NULL, plot.data.cpd = NULL,
 cols.ts.gene = NULL, cols.ts.cpd = NULL, node.data, pathway.name,
-out.suffix = "pathview", kegg.dir = ".", match.data = TRUE, same.layer =
-TRUE, res = 300, cex = 0.25, discrete=list(gene=FALSE, cpd=FALSE), limit
-= list(gene = 1, cpd = 1), bins = list(gene = 10, cpd = 10), both.dirs =
-list(gene = T, cpd = T), low = list(gene = "green", cpd = "blue"), mid =
-list(gene = "gray", cpd = "gray"), high = list(gene = "red", cpd =
-"yellow"), na.col = "transparent", new.signature = TRUE, plot.col.key =
-TRUE, key.align = "x", key.pos = "topright", ...)
+out.suffix = "pathview", kegg.dir = ".", multi.state=TRUE, match.data =
+TRUE, same.layer = TRUE, res = 300, cex = 0.25, discrete =
+list(gene=FALSE, cpd=FALSE), limit= list(gene = 1, cpd = 1), bins =
+list(gene = 10, cpd = 10), both.dirs =list(gene = T, cpd = T), low =
+list(gene = "green", cpd = "blue"), mid = list(gene = "gray", cpd =
+"gray"), high = list(gene = "red", cpd = "yellow"), na.col =
+"transparent", new.signature = TRUE, plot.col.key = TRUE, key.align =
+"x", key.pos = "topright", ...)
 
 keggview.graph(plot.data.gene = NULL, plot.data.cpd = NULL, cols.ts.gene
 = NULL, cols.ts.cpd = NULL, node.data, path.graph, pathway.name,
-out.suffix = "pathview", pdf.size = c(7, 7), same.layer = TRUE,
-match.data = TRUE, rankdir = c("LR", "TB")[1], is.signal = TRUE,
-split.group = F, afactor = 1, text.width = 15, cex = 0.5, map.cpdname =
-FALSE, cpd.lab.offset = 1.0, discrete=list(gene=FALSE, cpd=FALSE), limit
-= list(gene = 1, cpd = 1), bins = list(gene = 10, cpd = 10), both.dirs =
-list(gene = T, cpd = T), low = list(gene = "green", cpd = "blue"), mid =
-list(gene = "gray", cpd = "gray"), high = list(gene = "red", cpd =
-"yellow"), na.col = "transparent", new.signature = TRUE, plot.col.key =
-TRUE, key.align = "x", key.pos = "topright", sign.pos = "bottomright",
-...)
-}
+out.suffix = "pathview", pdf.size = c(7, 7), multi.state=TRUE,
+same.layer = TRUE, match.data = TRUE, rankdir = c("LR", "TB")[1],
+is.signal = TRUE, split.group = F, afactor = 1, text.width = 15, cex =
+0.5, map.cpdname = FALSE, cpd.lab.offset = 1.0,
+discrete=list(gene=FALSE, cpd=FALSE), limit = list(gene = 1, cpd = 1),
+bins = list(gene = 10, cpd = 10), both.dirs = list(gene = T, cpd = T),
+low = list(gene = "green", cpd = "blue"), mid = list(gene = "gray", cpd
+= "gray"), high = list(gene = "red", cpd = "yellow"), na.col =
+"transparent", new.signature = TRUE, plot.col.key = TRUE, key.align =
+"x", key.pos = "topright", sign.pos = "bottomright", ...)  }
 
 \arguments{
   \item{gene.data}{
-    either vector (single sample) or a matrix-like data (multiple
-  sample). Vector should be numeric with gene IDs as names or it
-  may also be character of gene IDs. Character vector is treated as
-  discrete or count data. Matrix-like data structure has genes as
-  rows and samples as columns. Row names should be gene IDs. Here gene
-  ID is a generic concepts, including multiple types of gene, transcript and protein
-  uniquely mappable to KEGG gene IDs. KEGG ortholog IDs are also treated
-  as gene IDs as to handle metagenomic data. Check details for mappable
-  ID types. Default gene.data=NULL.
+  either vector (single sample) or a matrix-like data (multiple
+  sample). Vector should be numeric with gene IDs as names or it may
+  also be character of gene IDs. Character vector is treated as discrete
+  or count data. Matrix-like data structure has genes as rows and
+  samples as columns. Row names should be gene IDs. Here gene ID is a
+  generic concepts, including multiple types of gene, transcript and
+  protein uniquely mappable to KEGG gene IDs. KEGG ortholog IDs are also
+  treated as gene IDs as to handle metagenomic data. Check details for
+  mappable ID types. Default gene.data=NULL.
 
   numeric, character, continuous
 }
@@ -246,9 +246,20 @@ character, the suffix to be added after the pathway name as part of the
   output graph file. Sample names or column names of the gene.data or
   cpd.data are also added when there are multiple samples. Default out.suffix="pathview".
 }
+\item{multi.state}{
+  logical, whether multiple states (samples or columns) gene.data or
+  cpd.data should be integrated and plotted in the same graph. Default
+  match.data=TRUE. In other words, gene or compound nodes will be sliced
+  into multiple pieces corresponding to the number of states in the
+  data.
+}
   \item{match.data}{
-logical, whether gene.data or cpd.data should be paired up by recyling
-  the less one if the sample numbers are different. Default match.data=TRUE.
+  logical, whether the samples of gene.data and cpd.data are
+  paired. Default match.data=TRUE. When let sample sizes of gene.data
+  and cpd.data be m and n, when m>n, extra columns of NA's (mapped to no
+  color) will be added to cpd.data as to make the sample size the
+  same. This will result in the smae number of slice in gene nodes and
+  compound when multi.state=TRUE.
 }
   \item{same.layer}{
     logical, control plotting layers:
@@ -382,8 +393,9 @@ Reactome, NCI and other databases will be supported in the future.
 
  }
 \references{
-  Luo, W., et al, Pathview: pathway based data integration and visualization.
-  submitted, 2013
+  Luo, W. and Brouwer, C., Pathview: an R/Bioconductor package for
+  pathway based data integration and visualization. Bioinformatics,
+ 2013, 29(14): 1830-1831, doi: 10.1093/bioinformatics/btt285
 }
 \author{
   Weijun Luo <luo_weijun@yahoo.com>
@@ -423,6 +435,18 @@ pathway.id = demo.paths$sel.paths[i], species = "hsa", out.suffix =
 "gse16873.cpd", keys.align = "y", kegg.native = TRUE, key.pos = demo.paths$kpos1[i])
 str(pv.out)
 head(pv.out$plot.data.cpd)
+
+#multiple states in one graph
+set.seed(10)
+sim.cpd.data2 = matrix(sample(sim.cpd.data, 18000, 
+    replace = TRUE), ncol = 6)
+pv.out <- pathview(gene.data = gse16873.d[, 1:3], 
+    cpd.data = sim.cpd.data2[, 1:2], pathway.id = demo.paths$sel.paths[i], 
+    species = "hsa", out.suffix = "gse16873.cpd.3-2s", keys.align = "y", 
+    kegg.native = TRUE, match.data = FALSE, multi.state = TRUE, same.layer = TRUE)
+str(pv.out)
+head(pv.out$plot.data.cpd)
+
 #result PNG file in current directory
 
 ##more examples of pathview usages are shown in the vignette.

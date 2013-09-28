@@ -9,7 +9,7 @@ keggview.graph <-function(
                            out.suffix="pathview",
                            pdf.size=c(7,7),
 
-
+                          multi.state=TRUE,
                           same.layer=TRUE,
                           match.data=TRUE,
                            rankdir=c("LR","TB")[1],
@@ -135,7 +135,6 @@ keggview.graph <-function(
   fillcol=rep(na.col, length(nNames))
   names(fillcol)=nNames
 
-  
                                         #edge attributes
   subdisplay <- subtypeDisplay(gR2)
   if(length(subdisplay)<1) eAttrs=list() else{
@@ -195,15 +194,26 @@ keggview.graph <-function(
     pn.suffix=out.suffix
   } else pn.suffix=paste(out.suffix, pn.suffix, sep=".")
 
-  if(match.data & nc.gene!=nc.cpd){
-  if(nc.gene>nc.cpd) cols.ts.cpd= cols.ts.cpd[, rep(1:nc.cpd, nplots)[1:nplots]]
-  if(nc.gene<nc.cpd) cols.ts.gene= cols.ts.gene[, rep(1:nc.gene, nplots)[1:nplots]]
-  nc.gene=nc.cpd=nplots
+  if((match.data | !multi.state) & nc.gene!=nc.cpd){
+#  if(nc.gene>nc.cpd) cols.ts.cpd= cols.ts.cpd[, rep(1:nc.cpd, nplots)[1:nplots]]
+#  if(nc.gene<nc.cpd) cols.ts.gene= cols.ts.gene[, rep(1:nc.gene, nplots)[1:nplots]]
+
+    if(nc.gene>nc.cpd & !is.null(cols.ts.cpd)){
+      na.mat=matrix(na.col, ncol=nplots-nc.cpd, nrow=nrow(cols.ts.cpd))
+      cols.ts.cpd= cbind(cols.ts.cpd, na.mat)
+    }
+    if(nc.gene<nc.cpd & !is.null(cols.ts.gene)){
+      na.mat=matrix(na.col, ncol=nplots-nc.gene, nrow=nrow(cols.ts.gene))
+      cols.ts.gene= cbind(cols.ts.gene, na.mat)
+    }
+    nc.gene=nc.cpd=nplots
   }
 
   if(!is.null(cols.ts.gene)){
     nidx.gene=which(nNames %in% rownames(cols.ts.gene))
     cidx.gene=match(nNames[nidx.gene], rownames(cols.ts.gene))
+    sci.gene=match(sub2grp[sub.idx,1], rownames(cols.ts.gene))
+    sci.node=match(sub2grp[sub.idx,1], nNames)
   }
     if(!is.null(cols.ts.cpd)){
     nidx.cpd=which(nNames %in% rownames(cols.ts.cpd))
@@ -215,15 +225,20 @@ keggview.graph <-function(
   out.msg=sprintf(out.fmt, wdir)
   message(out.msg)
   out.fmt="Writing image file %s"
-#initialize node colors
+  
+#initialize node colors, independent of user data
   if(sum(rect.idx)>0){
-    cn.col=fillcol[sub2grp[sub.idx,1]]
+    cn.col=rep(NA, sum(sub.idx))
+    cn.col=fillcol[sci.node]
+    names(cn.col)=sub2grp[sub.idx,1]
     rect.col=c(cn.col,fillcol[nSizes==1 & rect.idx])
     rect.col[rect.col==na.col]=NA
+    rect.col=matrix(rep(rect.col,nplots), ncol=nplots)
   }
   if(sum(cpd.idx)>0){
     ell.col=fillcol[cpd.idx]
     ell.col[ell.col==na.col]=NA
+    ell.col=matrix(rep(ell.col,nplots), ncol=nplots)
     w.e=min(nri$lWidth[cpd.idx])
     h.e=min(nri$height[cpd.idx])
     xloc.e=loc[[1]][cpd.idx]
@@ -231,24 +246,55 @@ keggview.graph <-function(
   }
 
 
-for(np in 1:nplots){
-  if(!is.null(cols.ts.gene) & nc.gene>=np){
-    fillcol[nidx.gene]=cols.ts.gene[cidx.gene,np] #need to be added in pathview.graph
-    cn.col=cols.ts.gene[,np][sub2grp[sub.idx,1]]
-    rect.col=c(cn.col,fillcol[nSizes==1 & rect.idx])
+#  fillcol=matrix(rep(fillcol,nplots), ncol=nplots)
+  fillcol=matrix(na.col, nrow=length(nNames), ncol=nplots)
+  rownames(fillcol)=nNames
+
+  if(!is.null(cols.ts.gene) & sum(rect.idx)>0){
+    fillcol[nidx.gene,1:nc.gene]=cols.ts.gene[cidx.gene,] #need to be added in pathview.graph
+    cn.col=matrix(NA, nrow=sum(sub.idx), ncol=nc.gene)
+    cn.col[]=cols.ts.gene[sci.gene,]
+    rownames(cn.col)=sub2grp[sub.idx,1]
+    if(nc.gene>1) rect.col=rbind(cn.col,fillcol[nSizes==1 & rect.idx,1:nc.gene])
+    else rect.col=c(cn.col,fillcol[nSizes==1 & rect.idx,1])
     rect.col[rect.col==na.col]=NA
   }
 
-  if(!is.null(cols.ts.cpd) & nc.cpd>=np){
-    fillcol[nidx.cpd]=cols.ts.cpd[cidx.cpd,np]
+  if(!is.null(cols.ts.cpd) & sum(cpd.idx)>0){
+    fillcol[nidx.cpd,1:nc.cpd]=cols.ts.cpd[cidx.cpd,]
   if(sum(cpd.idx)>0){
-    ell.col=fillcol[cpd.idx]
+    ell.col=fillcol[cpd.idx,1:nc.cpd]
     ell.col[ell.col==na.col]=NA
   }
   }
+
+  multi.state=multi.state & nplots>1
+if(multi.state) {
+  nplots=1
+  pn.suffix=paste(out.suffix, "multi", sep=".")
+  if(sum(rect.idx>0)) rect.col.plot=rect.col
+  if(sum(cpd.idx)>0) ell.col.plot=ell.col
+}
+  
+for(np in 1:nplots){
   gfile=paste(pathway.name, pn.suffix[np],"pdf", sep=".")
+#  gfile=paste(pathway.name, pn.suffix[1],"pdf", sep=".")
   out.msg=sprintf(out.fmt, gfile)
   message(out.msg)
+
+#KEGG legend type
+  ntypes=length(unique(node.data$type[nNames]))
+  etypes=nrow(unique(t(subdisplay)))
+  if(!same.layer) kl.type="both"
+  
+  else{
+    if(ntypes<3 & sum(cpd.idx)<3) kl.type="edge"
+    else if(etypes<3) kl.type="node"
+    else {
+      kl.type="both"
+      same.layer=FALSE
+    }
+  }
 
   pdf.width=ifelse(same.layer,1.5,1)* pdf.size[1]
     pdf(gfile, width=pdf.width,height=pdf.size[2])
@@ -260,12 +306,14 @@ for(np in 1:nplots){
   
                                         #text(loc, label = labs[nNames], cex = cex)
   if(sum(rect.idx)>0){
-    rect(xloc.nd-w.unit,yloc.nd-h.unit/2, xloc.nd+w.unit,yloc.nd+h.unit/2, col=rect.col)
-  rect.col[]=NA
+    if(!multi.state) rect.col.plot=cbind(rect.col)[,np]
+#    rect(xloc.nd-w.unit,yloc.nd-h.unit/2, xloc.nd+w.unit,yloc.nd+h.unit/2, col=rect.col)
+    rect.out=sliced.shapes(xloc.nd,yloc.nd, w.unit, h.unit/2, cols=rect.col.plot, shape="rectangle")
   }
   if(sum(cpd.idx)>0) {
-    ellipses(xloc.e, yloc.e, w.e, h.e/2, cols=ell.col)
-    ell.col[]=NA
+    if(!multi.state) ell.col.plot=cbind(ell.col)[,np]
+#    ellipses(xloc.e, yloc.e, w.e, h.e/2, cols=ell.col)
+    ell.out=sliced.shapes(xloc.e, yloc.e, w.e, h.e/2, cols=ell.col.plot, shape="ellipse")
   }
   if(sum(cni)>0){
     if(sum(sub.idx)>0) text(xloc, yloc, label = labs[sub2grp[sub.idx,1]], cex = cex)
@@ -291,9 +339,8 @@ for(np in 1:nplots){
   off.sets=c(x=0,y=0)
   align="n"
 
- ucol.gene=unique(as.vector(cols.ts.gene))
+  ucol.gene=unique(as.vector(cols.ts.gene))
  na.col.gene=ucol.gene %in% c(na.col, NA)
-
   if(plot.col.key & !is.null(cols.ts.gene) & !all(na.col.gene))  {
     off.sets=col.key(limit=limit$gene, bins=bins$gene, both.dirs=both.dirs$gene, discrete=discrete$gene, graph.size=pv.pars$gsizes,
       node.size=pv.pars$nsizes, key.pos=key.pos, cex=pv.pars$key.cex, lwd=pv.pars$key.lwd, low=low$gene, mid=mid$gene, high=high$gene, align="n")
@@ -308,7 +355,8 @@ for(np in 1:nplots){
   }
   
   if(new.signature) pathview.stamp(position=sign.pos, graph.sizes=pv.pars$gsizes, on.kegg=F, cex = pv.pars$sign.cex)
-  kegg.legend(edges.only=same.layer)
+#  kegg.legend(edges.only=same.layer)
+  kegg.legend(type=kl.type)
   par(pv.pars$op)
   dev.off()
 }

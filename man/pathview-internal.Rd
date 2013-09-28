@@ -12,6 +12,7 @@
 \alias{pathview.stamp}
 \alias{circles}
 \alias{ellipses}
+\alias{sliced.shapes}
 \alias{colorpanel2}
 
 \title{Internal functions}
@@ -37,7 +38,7 @@
   at molecular level or node level when multiple items mapping to the
   same ID/node. 
 
-  Function circles and ellipses Draw KEGG nodes in colored shapes
+  Function circles, ellipses and sliced.shapes draw KEGG nodes in colored shapes
   (circles and ellipses).
   
   Functions deComp and rownorm were written by Weijun Luo, the author of

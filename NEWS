@@ -1,11 +1,29 @@
+VERSION 1.1.7
+-------------
+
+  o Graphviz view can automatic choose different types of legends,
+    either on nodes, edges or both depending on the specific pathways.
+
+  o Vigette has been reformatted: the "Quick start" section added
+
+VERSION 1.1.6
+-------------
+  o Pathview can plot/integrate/compare multiple states/samples in the
+    same graph. Several functions and data objects are revised:
+    including pathview, keggview.native, keggview.graph,
+    render.kegg.node etc. New section on multiple state data with
+    working exampleshas been added.
+
+  o Vigette has been reformatted: Data integration section splitted
+    into multiple sub-sections.
+
 VERSION 1.1.5
 -------------
   o Pathview works with species where default KEGG gene ID is not
-    Entrez Gene. Several functions and data objects are revised: 
+    Entrez Gene. Several functions and data objects are revised:
     including pathview, node.map, sim.mol.data, kegg.species.code,
     korg. New section on KEGG species and Gene ID usage with working
-     exampleshas been added.
-
+    exampleshas been added.
 
 VERSION 1.1.3
 -------------

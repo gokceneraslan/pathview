@@ -9,7 +9,8 @@ function(
                            out.suffix="pathview",
                          kegg.dir=".",
 
-                           match.data=TRUE,
+                          multi.state=TRUE,
+                          match.data=TRUE,
                            same.layer=TRUE, #
                          res=300, #
                          cex = 0.25,#
@@ -22,6 +23,7 @@ function(
                          mid = list(gene = "gray", cpd = "gray"),
                          high = list(gene = "red", cpd = "yellow"),
          na.col="transparent",
+#         na.col="white",
          
                          new.signature=TRUE,
                          plot.col.key=TRUE,
@@ -47,17 +49,37 @@ function(
   if(length(pn.suffix)==1) {
     pn.suffix=out.suffix
   } else pn.suffix=paste(out.suffix, pn.suffix, sep=".")
-  if(match.data & nc.gene!=nc.cpd){
-  if(nc.gene>nc.cpd) cols.ts.cpd= cols.ts.cpd[, rep(1:nc.cpd, nplots)[1:nplots]]
-  if(nc.gene<nc.cpd) cols.ts.gene= cols.ts.gene[, rep(1:nc.gene, nplots)[1:nplots]]
-  nc.gene=nc.cpd=nplots
+
+     na.col=colorpanel2(1, low=na.col, high=na.col)
+  if((match.data | !multi.state) & nc.gene!=nc.cpd){
+#  if(nc.gene>nc.cpd) cols.ts.cpd= cols.ts.cpd[, rep(1:nc.cpd, nplots)[1:nplots]]
+#  if(nc.gene<nc.cpd) cols.ts.gene= cols.ts.gene[, rep(1:nc.gene, nplots)[1:nplots]]
+
+     if(nc.gene>nc.cpd & !is.null(cols.ts.cpd)){
+      na.mat=matrix(na.col, ncol=nplots-nc.cpd, nrow=nrow(cols.ts.cpd))
+      cols.ts.cpd= cbind(cols.ts.cpd, na.mat)
+    }
+    if(nc.gene<nc.cpd & !is.null(cols.ts.gene)){
+      na.mat=matrix(na.col, ncol=nplots-nc.gene, nrow=nrow(cols.ts.gene))
+      cols.ts.gene= cbind(cols.ts.gene, na.mat)
+    }
+    nc.gene=nc.cpd=nplots
   }
+  
   out.fmt="Working in directory %s"
   wdir=getwd()
   out.msg=sprintf(out.fmt, wdir)
   message(out.msg)
   out.fmt="Writing image file %s"
-  
+
+    multi.state=multi.state & nplots>1
+if(multi.state) {
+  nplots=1
+  pn.suffix=paste(out.suffix, "multi", sep=".")
+  if(nc.gene>0) cols.gene.plot=cols.ts.gene
+  if(nc.cpd>0) cols.cpd.plot=cols.ts.cpd
+}
+
 for(np in 1:nplots){
 #plot setup
  img.file =paste(pathway.name,pn.suffix[np],"png", sep=".")
@@ -71,19 +93,20 @@ for(np in 1:nplots){
   if(same.layer!=T)  rasterImage(img, 0, 0, width, height, interpolate = F)
   
 if(!is.null(cols.ts.gene) & nc.gene>=np){
-  if(same.layer!=T){
-      render.kegg.node(plot.data.gene, cols.ts.gene[,np], img, same.layer=same.layer, type="gene", cex=cex)
+    if(!multi.state) cols.gene.plot=cols.ts.gene[,np]
+    if(same.layer!=T){
+      render.kegg.node(plot.data.gene, cols.gene.plot, img, same.layer=same.layer, type="gene", cex=cex)
   } else{
-  img=render.kegg.node(plot.data.gene, cols.ts.gene[,np], img, same.layer=same.layer, type="gene")
+  img=render.kegg.node(plot.data.gene, cols.gene.plot, img, same.layer=same.layer, type="gene")
   }
 } 
 
 if(!is.null(cols.ts.cpd) & nc.cpd>=np){
-
+    if(!multi.state) cols.cpd.plot=cols.ts.cpd[,np]
   if(same.layer!=T){
-      render.kegg.node(plot.data.cpd, cols.ts.cpd[,np], img, same.layer=same.layer, type="compound", cex=cex)
+      render.kegg.node(plot.data.cpd, cols.cpd.plot, img, same.layer=same.layer, type="compound", cex=cex)
   } else{
-  img=render.kegg.node(plot.data.cpd, cols.ts.cpd[,np], img, same.layer=same.layer, type="compound")
+  img=render.kegg.node(plot.data.cpd, cols.cpd.plot, img, same.layer=same.layer, type="compound")
   }
 }
   
@@ -99,9 +122,10 @@ if(!is.null(cols.ts.cpd) & nc.cpd>=np){
   off.sets=c(x=0,y=0)
   align="n"
 
- na.col=colorpanel2(1, low=na.col, high=na.col)
+# na.col=colorpanel2(1, low=na.col, high=na.col)
  ucol.gene=unique(as.vector(cols.ts.gene))
  na.col.gene=ucol.gene %in% c(na.col, NA)
+
   if(plot.col.key & !is.null(cols.ts.gene) & !all(na.col.gene))  {
     off.sets=col.key(limit=limit$gene, bins=bins$gene, both.dirs=both.dirs$gene, discrete=discrete$gene, graph.size=pv.pars$gsizes,
       node.size=pv.pars$nsizes, key.pos=key.pos, cex=pv.pars$key.cex, lwd=pv.pars$key.lwd, low=low$gene, mid=mid$gene, high=high$gene, align="n")
