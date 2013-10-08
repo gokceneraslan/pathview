@@ -37,7 +37,7 @@
 \maketitle
 
 \begin{abstract}
-  In this vignette, we demonstrate the \Rpackage{pathview} package as a tool set for pathway based data integration and visualization. It maps and renders user data on relevant pathway graphs. All users need is to supply their gene or compound data and specify the target pathway. \Rpackage{Pathview} automatically downloads the pathway graph data, parses the data file, maps user data to the pathway, and renders pathway graph with the mapped data. Although built as a stand-alone program, \Rpackage{pathview} may seamlessly integrate with pathway and gene set (enrichment) analysis tools for a large-scale and fully automated analysis pipeline. In this vignette, we introduce common and advanced uses of \Rpackage{pathview}. We also cover package installation, data preparation, other useful features and common application errors. In \Rpackage{gage} package, vignette \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf}{"RNA-Seq Data Pathway and Gene-set Analysis Workflows"} demonstrates GAGE/Pathview workflows on RNA-seq and microarray pathway analysis.
+  In this vignette, we demonstrate the \Rpackage{pathview} package as a tool set for pathway based data integration and visualization. It maps and renders user data on relevant pathway graphs. All users need is to supply their gene or compound data and specify the target pathway. \Rpackage{Pathview} automatically downloads the pathway graph data, parses the data file, maps user data to the pathway, and renders pathway graph with the mapped data. Although built as a stand-alone program, \Rpackage{pathview} may seamlessly integrate with pathway and gene set (enrichment) analysis tools for a large-scale and fully automated analysis pipeline. In this vignette, we introduce common and advanced uses of \Rpackage{pathview}. We also cover package installation, data preparation, other useful features and common application errors. In \Rpackage{gage} package, vignette \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf}{"RNA-Seq Data Pathway and Gene-set Analysis Workflows"} demonstrates GAGE/Pathview workflows on RNA-seq (and microarray) pathway analysis.
 \end{abstract}
 
 \section{Quick start with demo data}
@@ -53,10 +53,10 @@ pv.out <- pathview(gene.data = gse16873.d[, 1], pathway.id = "04110",
 
 \section{New features}
 \label{sec:news}
-\Rpackage{Pathview} now can plot/integrate/compare multiple states or samples in the same graph. Please check (Figure \hyperref[fig:multi1]{\ref*{fig:multi1}} - \hyperref[fig:multi2]{\ref*{fig:multi2}} for examples and (\hyperref[subsec:multiple]{Subsection \ref*{subsec:multiple}}) for details.
+\Rpackage{Pathview} now can plot/integrate/compare multiple states or samples in the same graph. Please check Figure \hyperref[fig:multi1]{\ref*{fig:multi1}} - \hyperref[fig:multi2]{\ref*{fig:multi2}} for examples and \hyperref[subsec:multiple]{Subsection \ref*{subsec:multiple}} for details.
 \\
 \\
-\Rpackage{Pathview} now can work with all KEGG species (about 2300 to date and more forthcoming) literally. This is important for studies on none model organisms or rare species. In the meantime, Pathview also supported KEGG Orthology (with species="ko"). This makes pathway analysis and visualization feasible with non-KEGG species or metagenomics/microbiome data. Please check (\hyperref[subsec:species]{Subsection \ref*{subsec:species}}) for details.
+\Rpackage{Pathview} now can work with all KEGG species (about 2300 to date and more forthcoming) literally. This is important for studies on none model organisms or rare species. In the meantime, Pathview also supported KEGG Orthology (with species="ko"). This makes pathway analysis and visualization feasible with non-KEGG species or metagenomics/microbiome data. Please check \hyperref[subsec:species]{Subsection \ref*{subsec:species}} for details.
 \\
 \\
 Graphviz view can automatic choose different types of legends, either on nodes (Figure \hyperref[fig:5b]{\ref*{fig:5b}}), edges  (Figure \hyperref[fig:2]{\ref*{fig:2}}) or both (Figure \hyperref[fig:3]{\ref*{fig:3}}) depending on the specific pathways.
@@ -386,7 +386,7 @@ pv.out <- pathview(gene.data = gse16873.d[, 1:3],
         \vspace{20pt}
         \begin{subfigure}[b]{1.0\textwidth}
                 \centering
-                \includegraphics[width=15cm,type=png,ext=.png,read=.png]{hsa00640.gse16873.cpd.3-2s.match.multi}
+                \fbox{\includegraphics[width=15cm,type=png,ext=.png,read=.png]{hsa00640.gse16873.cpd.3-2s.match.multi}}
                 \caption{}
                 \label{fig:multi1b}
         \end{subfigure}
@@ -557,7 +557,7 @@ pv.out <- pathview(gene.data = ko.data, pathway.id = "04112",
 
 \section{Integrated workflow with pathway analysis}
 \label{sec:workflow}
-Although built as a stand alone program, \Rpackage{Pathview} may seamlessly integrate with pathway and functional analysis tools for large-scale and fully automated analysis pipeline. The next example shows how to connect common pathway analysis to results rendering with \Rpackage{pathview}. The pathway analysis was done using another Bioconductor package \Rpackage{gage} \citep{luo:etal:2009}, and the selected signficant pathways plus the expression data were then piped to \Rpackage{pathview} for auomated results visualization (Figure not shown).
+Although built as a stand alone program, \Rpackage{Pathview} may seamlessly integrate with pathway and functional analysis tools for large-scale and fully automated analysis pipeline. The next example shows how to connect common pathway analysis to results rendering with \Rpackage{pathview}. The pathway analysis was done using another Bioconductor package \Rpackage{gage} \citep{luo:etal:2009}, and the selected signficant pathways plus the expression data were then piped to \Rpackage{pathview} for auomated results visualization (Figure not shown).  In \Rpackage{gage} package, vignette \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf}{"RNA-Seq Data Pathway and Gene-set Analysis Workflows"} demonstrates GAGE/Pathview workflows on RNA-seq (and microarray) pathway analysis.
 <<GAGE.Pathview.pipeline, echo=TRUE, eval=FALSE>>=
 library(gage)
 data(gse16873)
