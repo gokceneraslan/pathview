@@ -37,12 +37,12 @@
 \maketitle
 
 \begin{abstract}
-  In this vignette, we demonstrate the \Rpackage{pathview} package as a tool set for pathway based data integration and visualization. It maps and renders user data on relevant pathway graphs. All users need is to supply their gene or compound data and specify the target pathway. \Rpackage{Pathview} automatically downloads the pathway graph data, parses the data file, maps user data to the pathway, and renders pathway graph with the mapped data. Although built as a stand-alone program, \Rpackage{pathview} may seamlessly integrate with pathway (and functional) analysis tools for a large-scale and fully automated analysis pipeline. In this vignette, we introduce common and advanced uses of \Rpackage{pathview}. We also cover package installation, data preparation, other useful features and common application errors. In \Rpackage{gage} package, vignette "RNA-Seq Data Pathway and Gene-set Analysis Workflows" demonstrates GAGE/Pathview workflows on RNA-seq and microarray pathway analysis.
+  In this vignette, we demonstrate the \Rpackage{pathview} package as a tool set for pathway based data integration and visualization. It maps and renders user data on relevant pathway graphs. All users need is to supply their gene or compound data and specify the target pathway. \Rpackage{Pathview} automatically downloads the pathway graph data, parses the data file, maps user data to the pathway, and renders pathway graph with the mapped data. Although built as a stand-alone program, \Rpackage{pathview} may seamlessly integrate with pathway and gene set (enrichment) analysis tools for a large-scale and fully automated analysis pipeline. In this vignette, we introduce common and advanced uses of \Rpackage{pathview}. We also cover package installation, data preparation, other useful features and common application errors. In \Rpackage{gage} package, vignette \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf}{"RNA-Seq Data Pathway and Gene-set Analysis Workflows"} demonstrates GAGE/Pathview workflows on RNA-seq and microarray pathway analysis.
 \end{abstract}
 
 \section{Quick start with demo data}
 \label{sec:quick}
-This is the most basic use of \Rpackage{pathview}, please check the full description below for details. Here we assume that the input data are already read in R as in the demo examples. If you are not sure how to do so, you may check \Rpackage{gage} secondary vignette, "Gene set and data preparation".
+This is the most basic use of \Rpackage{pathview}, please check the full description below for details. Here we assume that the input data are already read in R as in the demo examples. If you are not sure how to do so, you may check \Rpackage{gage} secondary vignette, \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/dataPrep.pdf}{"Gene set and data preparation"}.
 
 <<synopsis1, echo=TRUE,  eval=FALSE>>=
 library(pathview)
@@ -70,16 +70,16 @@ Graphviz view can automatic choose different types of legends, either on nodes (
 
 \Rpackage{Pathview} provides strong support for data integration (\hyperref[sec:integration]{Section \ref*{sec:integration}}). It works with: 1) essentially all types of biological data mappable to pathways, 2) over 10 types of gene or protein IDs, and 20 types of compound or metabolite IDs, 3) pathways for over 2000 species as well as KEGG orthology, 4) varoius data attributes and formats, i.e. continuous/discrete data, matrices/vectors, single/multiple samples etc.
 
-\Rpackage{Pathview} is open source, fully automated and error-resistant. Therefore, it seamlessly integrates with pathway or gene set analysis tools. In \hyperref[sec:workflow]{Section \ref*{sec:workflow}}, we will show an integrated analysis using \Rpackage{pathview} with anothr the Bioconductor \Rpackage{gage} package \citep{luo:etal:2009}, available from the \href{www.bioconductor.org/packages/release/bioc/html/gage.html}{Bioconductor website}.
+\Rpackage{Pathview} is open source, fully automated and error-resistant. Therefore, it seamlessly integrates with pathway or gene set (enrichment) analysis tools. In \hyperref[sec:workflow]{Section \ref*{sec:workflow}}, we will show an integrated analysis using \Rpackage{pathview} with anothr the Bioconductor \Rpackage{gage} package \citep{luo:etal:2009}, available from the \href{www.bioconductor.org/packages/release/bioc/html/gage.html}{Bioconductor website}.
 
-Note that although we use microarray data as example gene data in this vignette, Pathview is equally applicable to RNA-Seq data and other types of gene/protein centered high throughput data. The secondary vignette in \Rpackage{gage} package, "RNA-Seq Data Pathway and Gene-set Analysis Workflows", demonstrates such applications.
+Note that although we use microarray data as example gene data in this vignette, Pathview is equally applicable to RNA-Seq data and other types of gene/protein centered high throughput data. The secondary vignette in \Rpackage{gage} package, \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf}{"RNA-Seq Data Pathway and Gene-set Analysis Workflows"}, demonstrates such applications.
 
 This vignette is written by assuming the user has minimal R/Bioconductor knowledge. Some descriptions and code chunks cover very basic usage of R. The more experienced users may simply omit these parts. 
 
 
 \section{Installation}
 \label{sec:installation}
-Assume R and Bioconductor have been correctly installed and accessible under current directory. Otherwise, please contact your system admin or follow the instructions on \href{http://www.r-project.org/}{R website} and \href{http://www.bioconductor.org/install/}{Bioconductor website}. Here I would strongly recommend users to install or upgrade to the latest verison of R (3.0)/Bioconductor (2.12) for simpler installation and better use of \Rpackage{Pathview}. You may need to update your \Rfunction{biocLite} too if you upgrade R/Biocondutor under Windows.
+Assume R and Bioconductor have been correctly installed and accessible under current directory. Otherwise, please contact your system admin or follow the instructions on \href{http://www.r-project.org/}{R website} and \href{http://www.bioconductor.org/install/}{Bioconductor website}. Here I would strongly recommend users to install or upgrade to the latest verison of R (3.0.2)/Bioconductor (2.13) for simpler installation and better use of \Rpackage{Pathview}. You may need to update your \Rfunction{biocLite} too if you upgrade R/Biocondutor under Windows.
 
 Start R: from Linux/Unix command line, type \verb@R@ (Enter); for Mac or Windows GUI, double click the R application icon to enter R console.
 

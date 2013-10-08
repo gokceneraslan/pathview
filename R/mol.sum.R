@@ -23,11 +23,25 @@ function(mol.data, id.map, gene.annotpkg="org.Hs.eg.db", sum.method=c("sum","mea
   id.map=id.map[sel.idx,]
   eff.idx=gd.names %in% id.map[,1]
   mapped.ids=id.map[match(gd.names[eff.idx], id.map[,1]),2]
-  sum.method=eval(as.name(sum.method))
-  mapped.data=apply(cbind(cbind(mol.data)[eff.idx,]),2,function(x){
-  sum.res=tapply(x, mapped.ids, sum.method, na.rm=T)
-  return(sum.res)
-})
+  if(sum.method %in% c("sum","mean")){
+    sum.method=eval(as.name(sum.method))
+    mapped.data=apply(cbind(cbind(mol.data)[eff.idx,]),2,function(x){
+      sum.res=tapply(x, mapped.ids, sum.method, na.rm=T)
+      return(sum.res)
+    })
+  } else{
+    sum.method=eval(as.name(sum.method))
+    mol.data=cbind(mol.data)[eff.idx,]
+    if(all(mol.data>=0) | all(mol.data<=0)){
+      vars=apply(cbind(mol.data), 1, IQR)
+    } else vars=apply(cbind(mol.data), 1, sum, na.rm=T)
+    
+    sel.rn=tapply(1:sum(eff.idx), mapped.ids, function(x){
+      x[which(vars[x]==sum.method(vars[x], na.rm=T))[1]]
+    })
+    mapped.data=cbind(mol.data[sel.rn,])
+    rownames(mapped.data)=names(sel.rn)
+  }
   return(mapped.data)
 }
 
