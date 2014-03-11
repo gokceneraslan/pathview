@@ -144,6 +144,6 @@ if(!is.null(cols.ts.cpd) & nc.cpd>=np){
   dev.off()
 }
   
-  return(pv.pars)
+  return(invisible(pv.pars))
 }
 

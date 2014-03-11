@@ -235,6 +235,6 @@ function(
     } else cnames[2]="mol.col"
     colnames(plot.data.cpd)[-(1:7)]=cnames
   }
-  return(list(plot.data.gene=plot.data.gene, plot.data.cpd=plot.data.cpd))
+  return(invisible(list(plot.data.gene=plot.data.gene, plot.data.cpd=plot.data.cpd)))
 }
 

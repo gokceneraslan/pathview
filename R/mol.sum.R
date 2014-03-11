@@ -31,13 +31,14 @@ function(mol.data, id.map, gene.annotpkg="org.Hs.eg.db", sum.method=c("sum","mea
     })
   } else{
     sum.method=eval(as.name(sum.method))
-    mol.data=cbind(mol.data)[eff.idx,]
+    mol.data=cbind(cbind(mol.data)[eff.idx,])
     if(all(mol.data>=0) | all(mol.data<=0)){
       vars=apply(cbind(mol.data), 1, IQR)
     } else vars=apply(cbind(mol.data), 1, sum, na.rm=T)
     
     sel.rn=tapply(1:sum(eff.idx), mapped.ids, function(x){
-      x[which(vars[x]==sum.method(vars[x], na.rm=T))[1]]
+      if(length(x)==1) return(x)
+      else return(x[which.min(abs(vars[x]-sum.method(vars[x], na.rm=T)))])
     })
     mapped.data=cbind(mol.data[sel.rn,])
     rownames(mapped.data)=names(sel.rn)

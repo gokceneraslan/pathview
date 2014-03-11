@@ -1,3 +1,31 @@
+VERSION 1.2.4
+-------------
+
+  o updated korg to included over 600 newly added species. Pathview
+    can work with 2970 species now.
+
+  o Make returned values from pathview, keggview.native and
+    keggview.graph functions invisible.
+
+VERSION 1.2.3
+-------------
+
+  o Fixed bug in node.map function, which produces 0 values when all
+    multiple genes in a node are NA's.
+
+VERSION 1.2.2
+-------------
+
+  o Fixed bug in mol.sum function, which generates "incorrect number of
+    dimension" or NA's when sum.method="median" etc.
+
+VERSION 1.2.1
+-------------
+
+  o Fixed bug in "missing red disease gene node labels" in diease
+    pathways. To avoid interfering with node coloring, set all disease
+    gene labels to black instead.
+
 VERSION 1.1.7
 -------------
 

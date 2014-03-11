@@ -361,6 +361,6 @@ for(np in 1:nplots){
   dev.off()
 }
   
-  return(pv.pars)
+  return(invisible(pv.pars))
 }
 
