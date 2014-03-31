@@ -5,7 +5,7 @@ function(ids, category=gene.idtype.list[1], org="Hs", pkg.name=NULL){
   pkg.on=require(pkg.name, character.only = TRUE)
     if(!pkg.on) {
           source("http://bioconductor.org/biocLite.R")
-          biocLite(pkg.name)
+          biocLite(pkg.name, suppressUpdates =TRUE)
           pkg.on=require(pkg.name, character.only = TRUE)
           if(!pkg.on) stop(paste("Fail to install/load gene annotation package ", pkg.name, "!",  sep=""))
         }
