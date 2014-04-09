@@ -12,8 +12,8 @@ function(plot.data, cols.ts, img, same.layer=TRUE, type=c("gene","compound")[1],
 
   if(type=="gene"){
   if(same.layer!=T){
-    rect.out=sliced.shapes(plot.data$x, height-plot.data$y, plot.data$width/2-0.5, plot.data$height/2-0.25,  col=cols.ts, draw.border=F, shape="rectangle")
-    text(plot.data$x, height-plot.data$y, labels = as.character(plot.data$labels),
+    rect.out=sliced.shapes(plot.data$x+0.5, height-plot.data$y, plot.data$width/2-0.5, plot.data$height/2-0.25,  col=cols.ts, draw.border=F, shape="rectangle")
+    text(plot.data$x+0.5, height-plot.data$y, labels = as.character(plot.data$labels),
          cex = cex, col = text.col)
     return(invisible(1))
   } else{
