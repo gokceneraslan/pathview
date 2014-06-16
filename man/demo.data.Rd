@@ -25,7 +25,7 @@ data(gse16873.d)
   demo.paths is a named list with ids and plotting parameters for 3
   pathways. For details do:
 
-  \code{demo.paths); demo.paths}
+  \code{data(demo.paths); demo.paths}
   
   gse16873.d is a numeric matrix with over 10000 rows (genes) and 2
   columns (samples). For details do:

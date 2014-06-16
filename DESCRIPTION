@@ -1,8 +1,8 @@
 Package: pathview
 Type: Package
 Title: a tool set for pathway based data integration and visualization
-Version: 1.5.1
-Date: 2014-4-8
+Version: 1.5.2
+Date: 2014-6-16
 Author: Weijun Luo
 Maintainer: Weijun Luo <luo_weijun@yahoo.com>
 Description: Pathview is a tool set for pathway based data integration
@@ -14,9 +14,10 @@ Description: Pathview is a tool set for pathway based data integration
         with the mapped data. In addition, Pathview also seamlessly
         integrates with pathway and gene set (enrichment) analysis tools for
         large-scale and fully automated analysis.
-biocViews: Pathways, GraphsAndNetwork, Visualization,
+biocViews: Pathways, GraphAndNetwork, Visualization,
         GeneSetEnrichment, DifferentialExpression, GeneExpression,
-        Microarray, RNASeq, Genetics, Metabolomics, Proteomics
+        Microarray, RNASeq, Genetics, Metabolomics, Proteomics,
+        SystemsBiology, Sequencing
 Depends: R (>= 2.10), KEGGgraph, org.Hs.eg.db
 Imports: Rgraphviz, graph, png, AnnotationDbi, KEGGREST, methods, utils
 Suggests: gage, org.Mm.eg.db, RUnit, BiocGenerics
