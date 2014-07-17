@@ -31,7 +31,7 @@ function(plot.data, cols.ts, img, same.layer=TRUE, type=c("gene","compound")[1],
       sel=pxr>=ceiling(brk.x[k,]) & pxr<=floor(brk.x[k+1,])
       for(i in 1:nn){
       sel.px=(pidx[i,1]:pidx[i,2])[sel[i,]]
-      node.rgb=img2[pidx[i,3]:pidx[i,4],sel.px, 1:3]
+      node.rgb=img[pidx[i,3]:pidx[i,4],sel.px, 1:3]
       node.rgb.sum=apply(node.rgb,c(1,2), sum)
       blk.ind=which(node.rgb.sum==0|node.rgb.sum==1,arr.ind=T)
       node.rgb=array(col.rgb[,i],dim(node.rgb)[3:1])

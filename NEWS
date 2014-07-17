@@ -1,3 +1,9 @@
+VERSION 1.4.2
+-------------
+
+  o fixed bug in render.kegg.node function, which generates black
+    lines in some nodes of multiple sample view.
+
 VERSION 1.3.6
 -------------
 
