@@ -25,21 +25,22 @@ function (pathway.id = "00010", species = "hsa", kegg.dir = ".")
       
       for (i in 1:npath) {
       msg=sprintf("Downloading xml files for %s, %d/%d pathways..", pathway.id[i], i, length(pathway.id))
-      print(msg)
+      message("Info: ", msg)
       xml.url=sprintf(xml.fmt,  pathway.id[i])
       xml.target=sprintf("%s/%s", kegg.dir, xml.fnames[i])
       xml.status=try(download.file(xml.url, xml.target, quiet=T), silent=T)
 
       msg=sprintf("Downloading png files for %s, %d/%d pathways..", pathway.id[i], i, length(pathway.id))
-      print(msg)
+      message("Info: ", msg)
       png.url=sprintf(png.fmt, species[i], png.fnames[i])
       png.target=sprintf("%s/%s", kegg.dir, png.fnames[i])
-      png.status=try(download.file(png.url, png.target, quiet=T, mode="wb"), silent=T)
+      png.status=suppressWarnings(try(download.file(png.url, png.target, quiet=T, mode="wb"), silent=T))
 
       success[i]=ifelse(png.status==0, "succeed", "failed")
       if(class(png.status)=="try-error"){
         warn.msg=sprintf(warn.fmt, pathway.id[i])
-        message(warn.msg)
+        message("Warning: ", warn.msg)
+        unlink(c(xml.target, png.target))
       }
     }
       return(success)

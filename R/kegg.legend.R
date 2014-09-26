@@ -2,7 +2,7 @@ kegg.legend=function (type=c("both", "edge", "node")[1]) {
   if(!type %in% c("both", "edge", "node")){
     msg.fmt="type has to be one of: \"%s\", \"%s\" and \"%s\"!"
     msg=sprintf(msg.fmt, "both", "edge", "node")
-    message(msg)
+    message("Note: ", msg)
     return(invisible(0))
   }
   if (!exists("KEGGEdgeSubtype")) {

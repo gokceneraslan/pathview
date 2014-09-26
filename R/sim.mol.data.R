@@ -23,7 +23,7 @@ sim.mol.data=function(mol.type=c("gene","gene.ko","cpd")[1], id.type=NULL, speci
         if(!is.na(species.data["kegg.geneid"])){
           msg.fmt3="Only native KEGG gene ID is supported for species \"%s\"!"
           msg=sprintf(msg.fmt3, species)
-          message(msg)
+          message("Note: ", msg)
         } else{
           msg.fmt3="Simulation is not supported for species \"%s\"!"
           msg=sprintf(msg.fmt3, species)
@@ -83,7 +83,7 @@ sim.mol.data=function(mol.type=c("gene","gene.ko","cpd")[1], id.type=NULL, speci
   nuids=length(all.mn)
   if(nmol>nuids){
     msg=sprintf(msg.fmt2, id.type, nuids)
-    message(msg)
+    message("Note: ", msg)
     nmol=nuids
   }
   sel.mn=sample(all.mn, nmol)

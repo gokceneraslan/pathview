@@ -175,7 +175,7 @@ argument specifies the limit values for gene.data and cpd.data when converting
 them to pseudo colors. Each element of the list could be of length 1 or
 2. Length 1 suggests discrete data or 1 directional (positive-valued)
 data, or the absolute limit for 2 directional data. Length 2 suggests 2
-directional data. Default limit=list(gene=0.5, cpd=1).
+directional data. Default limit=list(gene=1, cpd=1).
 }
   \item{bins}{
 a list of two integer elements with "gene" and "cpd" as the names. This
@@ -191,7 +191,7 @@ directional data when converting them to pseudo colors. Default limit=list(gene=
 a list of two function (not character) elements with "gene" and "cpd" as the names. This
 argument specifies whether and how gene.data and cpd.data are
 transformed. Examples are \code{log}, \code{abs} or users' own
-functions. Default limit=list( gene=NULL, cpd=NULL).
+functions. Default limit=list(gene=NULL, cpd=NULL).
 }
   \item{low, mid, high}{
 each is a list of two colors with "gene" and "cpd" as the names. This

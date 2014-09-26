@@ -36,6 +36,28 @@ function(
 #                         key.pos="topright",
 #                         sign.pos="bottomright",#g
                          ...){
+
+#length-2 arguments check
+
+  dtypes=!is.null(gene.data)+!is.null(cpd.data)
+  cond0=dtypes==1 & is.numeric(limit) & length(limit)>1
+  if(cond0){
+    if(limit[1]!=limit[2] & is.null(names(limit)))
+      limit=list(gene=limit[1:2], cpd=limit[1:2])
+  }
+  if(is.null(trans.fun)) trans.fun=list(gene = NULL,  cpd = NULL)
+  
+  arg.len2=c("discrete", "limit","bins", "both.dirs", "trans.fun", "low", "mid", "high")
+  for(arg in arg.len2){
+    obj1=eval(as.name(arg))
+    if(length(obj1)==1) obj1=rep(obj1,2)
+    if(length(obj1)>2) obj1=obj1[1:2]
+    obj1=as.list(obj1)
+    ns=names(obj1)
+    if(length(ns)==0 |!all(c("gene", "cpd") %in% ns)) names(obj1)=c("gene", "cpd")
+    assign(arg, obj1)
+  }
+
 #data.checck
   if(is.character(gene.data)){
     gd.names=gene.data
@@ -67,10 +89,10 @@ function(
     gene.idtype="KEGG"
     msg.fmt="Only KEGG ortholog gene ID is supported, make sure it looks like \"%s\"!"
     msg=sprintf(msg.fmt, species.data["kegg.geneid"])
-    message(msg)
+    message("Note: ", msg)
   }
   if(length(dim(species.data))==2) {
-    message("More than two valide species!")
+    message("Note: ", "More than two valide species!")
     species.data=species.data[1,]
   }
   species=species.data["kegg.code"]
@@ -79,7 +101,7 @@ function(
     if(!is.na(species.data["kegg.geneid"])){
       msg.fmt="Only native KEGG gene ID is supported for this species,\nmake sure it looks like \"%s\"!"
       msg=sprintf(msg.fmt, species.data["kegg.geneid"])
-      message(msg)
+      message("Note: ", msg)
     } else{
       stop("This species is not annotated in KEGG!")
     }
@@ -93,9 +115,9 @@ function(
     gene.idtype="ENTREZ"
   }
   if(gene.idtype=="ENTREZ" & !entrez.gnodes & !is.null(gene.data)){
-    message("Getting gene ID data from KEGG...")
+    message("Info: Getting gene ID data from KEGG...")
     gene.idmap=keggConv("ncbi-geneid", species)
-    message("Done with data retrieval!")
+    message("Info: Done with data retrieval!")
     kegg.ids=gsub(paste(species, ":", sep=""), "", names(gene.idmap))
     ncbi.ids=gsub("ncbi-geneid:", "", gene.idmap)
     gene.idmap=cbind(ncbi.ids, kegg.ids)
@@ -144,7 +166,7 @@ function(
   if(dstatus=="failed") {
     warn.fmt="Failed to download KEGG xml/png files, %s skipped!"
     warn.msg=sprintf(warn.fmt, pathway.name)
-    message(warn.msg)
+    message("Warning: ", warn.msg)
     return(invisible(0))
   }
   }
@@ -155,7 +177,7 @@ function(
     node.data=try(node.info(xml.file), silent=T)
     if(class(node.data)=="try-error"){
       warn.msg=sprintf(warn.fmt, xml.file)
-      message(warn.msg)
+      message("Warning: ", warn.msg)
       return(invisible(0))
     }
     node.type=c("gene","enzyme", "compound", "ortholog")
@@ -165,7 +187,7 @@ function(
     if(sum(sel.idx)<min.nnodes){
       warn.fmt="Number of mappable nodes is below %d, %s skipped!"
       warn.msg=sprintf(warn.fmt, min.nnodes, pathway.name)
-      message(warn.msg)
+      message("Warning: ", warn.msg)
       return(invisible(0))
     }
     node.data=lapply(node.data, "[", sel.idx)
@@ -174,7 +196,7 @@ function(
     node.data=try(node.info(gR1), silent=T)
     if(class(node.data)=="try-error"){
       warn.msg=sprintf(warn.fmt, xml.file)
-      message(warn.msg)
+      message("Warning: ", warn.msg)
       return(invisible(0))
     }
   }
@@ -188,9 +210,9 @@ function(
     if(any(kng.char>"")) entrez.gnodes=FALSE
     if(map.symbol & species!="ko" & entrez.gnodes) {
               if(is.na(gene.annotpkg)) {
-                warm.fmt="No annotation package for the species %s, gene symbols not mapped!"
-                warm.msg=sprintf(warm.fmt, species)
-                message(warm.msg)
+                warn.fmt="No annotation package for the species %s, gene symbols not mapped!"
+                warn.msg=sprintf(warn.fmt, species)
+                message("Warning: ", warn.msg)
               } else {
                 plot.data.gene$labels=eg2id(as.character(plot.data.gene$kegg.names), category="SYMBOL", pkg.name=gene.annotpkg)[,2]
                 mapped.gnodes=rownames(plot.data.gene)

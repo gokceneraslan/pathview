@@ -18,7 +18,7 @@ function (object, ...)
         if(etype=="PCrel"){
           st.uk=new("KEGGEdgeSubType", name = "compound", value = "unknown")
         } else{
-          print(paste("Edge type:", etype, "without subtype sepecified!"))
+          message("Info: ", paste("Edge type:", etype, "without subtype sepecified!"))
           st.uk=new("KEGGEdgeSubType", name = "unknown", value = "unknown")
         }
         display <- subtypeDisplay(st.uk)

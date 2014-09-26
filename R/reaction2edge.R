@@ -6,7 +6,7 @@ function(path, gR){
   rdata=(path@reactions)
   edata=edges(path)
   if(length(ndata)<2 | length(rdata)<1){
-  message("Pathway has no reaction, no conversion needed!")
+  message("Note: ", "Pathway has no reaction, no conversion needed!")
   return(list(gR, edata, ndata))
   }
   

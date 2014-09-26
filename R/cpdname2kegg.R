@@ -8,7 +8,7 @@ function(in.ids){
 
   in.idx=in.ids  %in% cpd.names$NAME
   if(sum(in.idx)<1){
-    message("None of the compound ids mapped to the specified type!")
+    message("Note: ", "None of the compound ids mapped to the specified type!")
   } else{
     kg.accs[in.idx]=as.character(cpd.names$ACCESSION_NUMBER[match(in.ids[in.idx], cpd.names$NAME)])
   }

@@ -28,7 +28,7 @@ function(in.ids, in.type=c("KEGG", "KEGG COMPOUND accession")[1]){
 
   in.idx=in.ids  %in% cpd.names$ACCESSION_NUMBER
   if(sum(in.idx)<1) {
-    message("None of the compound ids mapped to the specified type!")
+    message("Note: ", "None of the compound ids mapped to the specified type!")
   } else{
     out.names[in.idx]=as.character(cpd.names$NAME[match(in.ids[in.idx], cpd.names$ACCESSION_NUMBER)])
   }

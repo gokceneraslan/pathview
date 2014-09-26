@@ -44,8 +44,8 @@ function(
   nc.cpd=max(ncol(cols.ts.cpd),0)#@
   nplots=max(nc.gene,nc.cpd)
   pn.suffix=colnames(cols.ts.gene)
-  if(length(pn.suffix)<nplots)  pn.suffix=colnames(cols.ts.cpd)
-  if(length(pn.suffix)<nplots)  pn.suffix=1:nplot
+  if(length(pn.suffix)<nc.cpd)  pn.suffix=colnames(cols.ts.cpd)
+  if(length(pn.suffix)<nplots)  pn.suffix=1:nplots #no column names for both datasets
   if(length(pn.suffix)==1) {
     pn.suffix=out.suffix
   } else pn.suffix=paste(out.suffix, pn.suffix, sep=".")
@@ -69,7 +69,7 @@ function(
   out.fmt="Working in directory %s"
   wdir=getwd()
   out.msg=sprintf(out.fmt, wdir)
-  message(out.msg)
+  message("Info: ", out.msg)
   out.fmt="Writing image file %s"
 
     multi.state=multi.state & nplots>1
@@ -84,7 +84,7 @@ for(np in 1:nplots){
 #plot setup
  img.file =paste(pathway.name,pn.suffix[np],"png", sep=".")
  out.msg=sprintf(out.fmt, img.file)
- message(out.msg)
+ message("Info: ", out.msg)
   png(img.file, width = width, height = height, res=res)
 
   op=par(mar = c(0, 0, 0, 0))

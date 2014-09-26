@@ -23,7 +23,7 @@ col.key <-
     xs=node.size[1]*3/bins
     ys=node.size[2]
   } else{
-    message("color key not plotted, node.size is needed\n when size.by.graph=FALSE!")
+    message("Note: ", "color key not plotted, node.size is needed\n when size.by.graph=FALSE!")
     return(off.sets)
   }
   

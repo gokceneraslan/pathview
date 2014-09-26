@@ -24,7 +24,7 @@ category=toupper(category)
     if(sum(mapped)>0) {
       map.res=AnnotationDbi::mget(eg[mapped], bimap)
 #      mr.len=sapply(map.res, length)
-#      print(c(ci,mean(mr.len)))
+
       ids[mapped]=sapply(map.res, paste, sep="", collapse="; ")
     }
     annot=cbind(annot, ids)

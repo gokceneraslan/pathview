@@ -18,7 +18,7 @@ if(both.dirs & length(limit)==1){
       limit[2]=limit[2]+1
       bins=bins+1
     } else if(discrete){
-      message("limit or bins not proper, data not treated as discrete!")
+      message("Note: ", "limit or bins not proper, data not treated as discrete!")
     }
 
   

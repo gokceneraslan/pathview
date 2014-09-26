@@ -2,7 +2,7 @@ node.map <-
 function(mol.data=NULL, node.data, node.types=c("gene", "ortholog", "compound")[1], node.sum =c("sum","mean", "median", "max", "max.abs", "random")[1], entrez.gnodes=TRUE){
 type.sel=node.data$type %in% node.types
 if(sum(type.sel)<1){
-  message("No specified node types in the pathway!")
+  message("Note: ", "No specified node types in the pathway!")
   plot.data=NULL
   return(plot.data)
 }
@@ -42,7 +42,7 @@ if(is.null(mol.data)){
     if(is.null(colnames(mol.data))) colnames(mol.data)=paste("ge", 1:ncol(mol.data),sep="")
     mapped.mols <- intersect(unlist(node.data$kegg.names), row.names(mol.data))
     if(length(mapped.mols)==0){
-      message(paste("No of the genes or compounds mapped to the pathway!",
+      message("Note: ", paste("None of the genes or compounds mapped to the pathway!",
                     "Argument gene.idtype or cpd.idtype may be wrong.", sep="\n"))
       plot.data=na.plot.data()
     } else{

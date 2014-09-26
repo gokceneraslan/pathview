@@ -1,3 +1,27 @@
+VERSION 1.5.4
+-------------
+
+  o adjust run-time messages into 3 consistent classes: Info (on
+    progress), Note and Warning.
+
+  o include paths.hsa data, the full list of human pathway ID/names
+    from KEGG, as to help user specify target pathways when calling
+    pathview.
+
+  o updated korg to included over 80 newly added species, such as
+    sheep, apple, mandarin orange etc. Pathview can work with 3050
+    species now.
+
+  o adjust the definitions of 7 arguments for pathview function:
+    discrete, limit,bins, both.dirs, trans.fun, low, mid, high. These
+    used to be a list of two logical elements with "gene" and "cpd" as
+    the names. They can be vectors of two or one element(s) now. This
+    makes pathview easier to use now.
+
+  o Vigette has been reformatted: add a Citation section, and some
+    example on reading user data into R, fix a few typos.
+
+
 VERSION 1.4.2
 -------------
 

@@ -7,7 +7,7 @@ function(species="hsa", na.rm=FALSE, code.only=TRUE){
       nai=is.na(ridx)
       if(sum(nai)>0) {
         na.msg=sprintf("Unknown species '%s'!", paste(species[nai], sep="", collapse="', '"))
-        message(na.msg)
+        message("Note: ", na.msg)
         }
       if(sum(nai)==nspec) {
         stop.msg="All species are invalid!"

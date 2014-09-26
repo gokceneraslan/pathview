@@ -30,12 +30,12 @@ function(ids, category=gene.idtype.list[1], org="Hs", pkg.name=NULL){
   if(sum(mapped)>0) {
     map.res=AnnotationDbi::mget(ids[mapped], bimap)
     mr.len=sapply(map.res, length)
-#    print(c(category,mean(mr.len)))
+
     if(any(mr.len>1)){
     map.res[mr.len>1]=lapply(map.res[mr.len>1], unique)
     mr.len=sapply(map.res, length)
   }
-#    print(c(category,mean(mr.len)))
+
     egs[mapped]=sapply(map.res, paste, sep="", collapse="; ")
   }
 

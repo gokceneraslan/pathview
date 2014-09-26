@@ -48,7 +48,7 @@ keggview.graph <-function(
     du.idx=duplicated(sub2grp[,1])
     if(sum(du.idx)>0){
       du.rn=sub2grp[,1] %in% sub2grp[du.idx,1]
-      message("warning: reconcile groups sharing member nodes!")
+      message("Warning: reconcile groups sharing member nodes!")
       print(sub2grp[du.rn,])
       du.grps=sub2grp[du.idx,]
       rn=which(du.idx)
@@ -93,7 +93,7 @@ keggview.graph <-function(
 
   if(length(nNames)<2){
         msg=sprintf("%s not rendered, 0 or 1 connected nodes!\nTry \"kegg.native=T\" instead!", pathway.name)
-            message(msg)
+            message("Note: ", msg)
             return(list())
       }
   
@@ -188,8 +188,8 @@ keggview.graph <-function(
   nc.cpd=max(ncol(cols.ts.cpd),0)#@
   nplots=max(nc.gene,nc.cpd)
   pn.suffix=colnames(cols.ts.gene)
-  if(length(pn.suffix)<nplots)  pn.suffix=colnames(cols.ts.cpd)
-  if(length(pn.suffix)<nplots)  pn.suffix=1:nplot
+  if(length(pn.suffix)<nc.cpd)  pn.suffix=colnames(cols.ts.cpd)
+  if(length(pn.suffix)<nplots)  pn.suffix=1:nplots #no column names for both datasets
   if(length(pn.suffix)==1) {
     pn.suffix=out.suffix
   } else pn.suffix=paste(out.suffix, pn.suffix, sep=".")
@@ -223,7 +223,7 @@ keggview.graph <-function(
   out.fmt="Working in directory %s"
   wdir=getwd()
   out.msg=sprintf(out.fmt, wdir)
-  message(out.msg)
+  message("Info: ", out.msg)
   out.fmt="Writing image file %s"
   
 #initialize node colors, independent of user data
@@ -280,7 +280,7 @@ for(np in 1:nplots){
   gfile=paste(pathway.name, pn.suffix[np],"pdf", sep=".")
 #  gfile=paste(pathway.name, pn.suffix[1],"pdf", sep=".")
   out.msg=sprintf(out.fmt, gfile)
-  message(out.msg)
+  message("Info: ", out.msg)
 
 #KEGG legend type
   ntypes=length(unique(node.data$type[nNames]))

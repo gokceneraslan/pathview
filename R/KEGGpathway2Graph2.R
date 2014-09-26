@@ -5,7 +5,7 @@ function (pathway, genesOnly = TRUE, expandGenes = TRUE, split.group=FALSE, chec
     if(split.group) pathway <- splitKEGGgroup(pathway)
     rdata=(pathway@reactions)
     if (expandGenes){
-      if(check.reaction & length(rdata)>0) message("Gene nodes not expanded when reactions are converted to edges!")
+      if(check.reaction & length(rdata)>0) message("Note: ", "Gene nodes not expanded when reactions are converted to edges!")
       else pathway <- expandKEGGPathway(pathway)
     }
     knodes <- nodes(pathway)
