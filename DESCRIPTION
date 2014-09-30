@@ -1,8 +1,8 @@
 Package: pathview
 Type: Package
 Title: a tool set for pathway based data integration and visualization
-Version: 1.5.4
-Date: 2014-9-26
+Version: 1.5.5
+Date: 2014-9-30
 Author: Weijun Luo
 Maintainer: Weijun Luo <luo_weijun@yahoo.com>
 Description: Pathview is a tool set for pathway based data integration
