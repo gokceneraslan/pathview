@@ -1,13 +1,17 @@
 import(
+       KEGGgraph,
        Rgraphviz,
        KEGGREST,
-       methods
+       methods,
+       XML,
+       graph
        )
 
 importFrom(png, readPNG)
 importFrom(AnnotationDbi, mget)
 importFrom(utils, data, installed.packages)
-importFrom(graph, addNode)
+#importFrom(graph, addNode, combineNodes, degree)
+
 
 export(
        download.kegg,
