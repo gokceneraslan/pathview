@@ -133,7 +133,7 @@ head(eg.symbname)
 #in.type="tair", out.type=gene.idtype.bods$ath[-1], org="At")
 #gid.map1 <-geneannot.map(in.ids=names(ath.tair)[rep(1:100,each=2)],
 #in.type="tair", out.type=gene.idtype.bods$ath[-1], org="At",
-#unique.map=F, keep.order=T)
+#unique.map=F, keep.order=F)
 #str(gid.map)
 #str(gid.map1)
 }
