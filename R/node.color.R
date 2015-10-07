@@ -1,7 +1,7 @@
 node.color <-
   function(plot.data=NULL, discrete=FALSE, limit=1, bins=10, both.dirs=TRUE, low="green", mid="gray", high="red", na.col="transparent", trans.fun=NULL){
     if(is.null(plot.data)) return(NULL)
-  node.summary=plot.data[,-c(1:7)]
+  node.summary=plot.data[,-c(1:8)]#c(1:7)
   if(length(dim(node.summary))==2) {
     node.summary=as.matrix(node.summary)
     } else names(node.summary)=rownames(plot.data)

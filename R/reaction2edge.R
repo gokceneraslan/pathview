@@ -58,8 +58,9 @@ function(path, gR){
   }
   names(ndata.new)=eid
   ndata.new=c(ndata,ndata.new)
-  gR=graph::addNode(eid, gR)
-
+#  gR=graph::addNode(eid, gR)
+  gR=addNode(eid, gR)
+  
 #create edges for ECrel and maplink types of relationships
   slen=sapply(rdata.tab[,3], length)
   plen=sapply(rdata.tab[,5], length)

@@ -1,3 +1,35 @@
+VERSION 1.9.3
+-------------
+
+  o pathview can accept a vector of multiple pathway ids, and
+    map/render the user data onto all these pathways in one call.
+
+  o one extra column "all.mapped" was added to pathview output
+    data.frames as to show all the gene/compound IDs mapped to each
+    node.
+
+  o add geneannot.map as a generic function for gene ID or annotation
+    mapping.
+
+  o sim.mol.data now generate data with all major gene ID types for
+    all 19 species in bods, not just human.
+
+  o download.kegg now let the user to choose from xml, png or both
+    file types to download for each input pathway. In the meantime, it
+    uses the KEGG REST API instead of the classical KEGG download
+    links. All potential pathways including the general pathways can be
+    downloaded this way.
+
+  o solve the redundant import from graph package.
+
+  o import specific instead of all functions from XML package.
+
+VERSION 1.9.1
+-------------
+
+  o solve the install error due to the recent change in KEGGgraph
+    package.
+
 VERSION 1.5.4
 -------------
 

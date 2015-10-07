@@ -5,6 +5,7 @@
 \alias{ko.ids}
 \alias{rn.list}
 \alias{gene.idtype.list}
+\alias{gene.idtype.bods}
 \alias{cpd.simtypes}
 \docType{data}
 \title{
@@ -20,6 +21,7 @@ data(kegg.met)
 data(ko.ids)
 data(rn.list)
 data(gene.idtype.list)
+data(gene.idtype.bods)
 data(cpd.simtypes)
 }
 \format{
@@ -31,8 +33,12 @@ data(cpd.simtypes)
   KEGG ortholog pathways.
   rn.list is a namedlist of 21 vectors. Each vector records the row numbers
   for one of 21 dfferent compound ID types in cpd.accs data.frame.
-  gene.idtype.list is a character vector of 10 common gene, transcript
-  or protein ID types.
+  gene.idtype.list is a character vector of 13 common gene, transcript
+  or protein ID types. Note some ID types are species specific, for
+  example TAIR or ORF.
+  gene.idtype.bods is a list of character vectors ofcommon gene, transcript
+  or protein ID types for the 19 major research species in bods. Each
+  element corresponds to a species.
   cpd.simtypes is a character vector of 7 common compound related ID
   types, each of them has over 1000 unique entries. Hence these ID types
   are good for generating simulation compound data.

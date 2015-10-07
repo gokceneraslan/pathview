@@ -5,8 +5,8 @@ test_id2eg <- function() {
   egs.mapped1=id2eg(symbs.good, category="SYMBOL", org = "Hs")[,2]
   checkEquals(egs.mapped1, egs.good)
 
-  egs.mapped2=id2eg(egs.good, category="SYMBOL", org = "Hs")[,2]
-  checkEquals(egs.mapped2, rep("",3))
+  egs.mapped2=id2eg(c(egs.good,symbs.good), category="SYMBOL", org = "Hs")[,2]
+  checkEquals(egs.mapped2, c(rep(NA,3), egs.good))
 
   checkException(id2eg(symbs.good, category="SYMBOL", org = "Hss"))
   checkException(id2eg(symbs.good, category="SYMBL", org = "Hs"))
@@ -19,8 +19,8 @@ test_eg2id <- function() {
   symbs.mapped1=eg2id(egs.good, category="SYMBOL", org = "Hs")[,2]
   checkEquals(symbs.mapped1, symbs.good)
 
-  symbs.mapped2=eg2id(symbs.good, category="SYMBOL", org = "Hs")[,2]
-  checkEquals(symbs.mapped2, rep("",3))
+  symbs.mapped2=eg2id(c(egs.good,symbs.good), category="SYMBOL", org = "Hs")[,2]
+  checkEquals(symbs.mapped2, c(symbs.good,rep(NA,3)))
 
   checkException(eg2id(egs.good, category="SYMBOL", org = "Hss"))
   checkException(eg2id(egs.good, category="SYMBL", org = "Hs"))

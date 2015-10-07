@@ -11,10 +11,15 @@ sim.mol.data=function(mol.type=c("gene","gene.ko","cpd")[1], id.type=NULL, speci
   
   
   if(mol.type=="gene"){
-      if(is.null(id.type)) id.type="KEGG"
-      id.type=toupper(id.type)
+    if(is.null(id.type)) id.type="KEGG"
+    id.type=toupper(id.type)
 
-      if(!species %in% c("hsa", "ko")){
+    data(bods)
+    load("~/project/pathview/r/pathview/data/gene.idtype.bods.rda")
+    ##data(gene.idtype.bods)
+    org19=bods[,"kegg code"]
+    
+    if(!species %in% c(org19, "ko")){
       if(!id.type %in% c("ENTREZ","KEGG")){
         msg=sprintf(msg.fmt, id.type, species, mol.type)
         stop(msg)
@@ -35,35 +40,26 @@ sim.mol.data=function(mol.type=c("gene","gene.ko","cpd")[1], id.type=NULL, speci
         all.mn=gsub(paste(species, ":", sep=""), "", names(gid.map))
       } else all.mn=gsub("ncbi-geneid:", "", gid.map)
 
-    } else if(species=="hsa"){
-      if(id.type=="KEGG") id.type="ENTREZ"
-      data(gene.idtype.list)
-
-      if(!id.type %in% c("ENTREZ",gene.idtype.list)){
-        msg=sprintf(msg.fmt, id.type, species, mol.type)
-        stop(msg)
-      }
-      pkg.name="org.Hs.eg.db"
-      require(pkg.name, character.only = TRUE)
-      pkg.name = gsub("[.]db", "", pkg.name)
-      if(id.type=="ENTREZ"){
-        bi.map = paste(pkg.name, "SYMBOL", sep = "")
-        bimap = eval(as.name(bi.map))
-      } else {
-        rev.map = paste(pkg.name, id.type, 2, "EG", sep = "")
-        if (exists(rev.map)) {
-          bimap = eval(as.name(rev.map))
+    } else if(species %in% org19){
+      if(id.type=="ENTREZ") id.type="ENTREZID"
+      if(id.type=="KEGG") {
+        gid.map=keggConv("ncbi-geneid",species)        
+        all.mn=gsub(paste(species, ":", sep=""), "", names(gid.map))
+      } else if(id.type %in% gene.idtype.bods[[species]]){
+        idx=which(bods[,3]==species)
+        pkg.name=bods[idx,1]
+        pkg.on=requireNamespace(pkg.name)
+        if(!pkg.on) {
+          source("http://bioconductor.org/biocLite.R")
+          biocLite(pkg.name, suppressUpdates =TRUE)
+          pkg.on=requireNamespace(pkg.name)
+          if(!pkg.on) stop(paste("Fail to install/load gene annotation package ", pkg.name, "!",  sep=""))
         }
-        else {
-          for.map = paste(pkg.name, id.type, sep = "")
-          for.map = eval(as.name(for.map))
-          if (class(for.map) != "AnnDbBimap")
-            for.map = as(for.map, "AnnDbBimap")
-          bimap = revmap(for.map)
-        }
-      }
-      all.mn=keys(bimap)
-    }
+        
+        db.obj <- eval(parse(text=paste0(pkg.name, "::", pkg.name)))
+        all.mn <-keys(db.obj, keytype=id.type)
+      } else stop("Wrong gene ID type!")
+    }            
   } else if(mol.type=="cpd"){
     data(cpd.accs)
     data(cpd.simtypes)

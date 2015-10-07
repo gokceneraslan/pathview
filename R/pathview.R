@@ -2,7 +2,7 @@ pathview <-
 function(
                          gene.data=NULL,
                          cpd.data=NULL,
-                         xml.file=NULL,
+#                         xml.file=NULL,
                          pathway.id,
                          species = "hsa",
                          kegg.dir=".",
@@ -81,7 +81,7 @@ function(
   }
   gene.idtype=toupper(gene.idtype)
   data(bods)
-  data(gene.idtype.list)
+#  data(gene.idtype.bods)
   if(species!="ko"){
     species.data=kegg.species.code(species, na.rm=T, code.only=FALSE)
   } else {
@@ -109,7 +109,7 @@ function(
   if(is.null(gene.annotpkg)) gene.annotpkg=bods[match(species, bods[,3]),1]
   if(length(grep("ENTREZ|KEGG", gene.idtype))<1 & !is.null(gene.data)){
     if(is.na(gene.annotpkg)) stop("No proper gene annotation package available!")
-    if(!gene.idtype %in% gene.idtype.list) stop("Wrong input gene ID type!")
+    if(!gene.idtype %in% gene.idtype.bods[[species]]) stop("Wrong input gene ID type!")
     gene.idmap=id2eg(gd.names, category=gene.idtype, pkg.name=gene.annotpkg)
     gene.data=mol.sum(gene.data, gene.idmap)
     gene.idtype="ENTREZ"
@@ -160,23 +160,33 @@ function(
     pathway.id = gsub(species, "", pathway.id)
   } else pathway.name = paste(species, pathway.id, sep = "")
   kfiles=list.files(path=kegg.dir, pattern="[.]xml|[.]png")
-  tfiles=paste(pathway.name, c("xml","png"), sep=".")
-  if(!all(tfiles %in% kfiles)){
-    dstatus=download.kegg(pathway.id = pathway.id, species = species, kegg.dir=kegg.dir)
-  if(dstatus=="failed") {
-    warn.fmt="Failed to download KEGG xml/png files, %s skipped!"
-    warn.msg=sprintf(warn.fmt, pathway.name)
-    message("Warning: ", warn.msg)
-    return(invisible(0))
-  }
-  }
+  npath=length(pathway.id)
+  out.list=list()#vector(mode = "list", length = npath)
+  
+  #if(is.null(xml.file) | length(xml.file)!=npath)#custom xml and png file need to have the same names
+  tfiles.xml=paste(pathway.name, "xml", sep=".")
+  tfiles.png=paste(pathway.name, "png", sep=".")
+  if(kegg.native) ttype=c("xml", "png") else ttype="png"
+  xml.file <- paste(kegg.dir, "/", tfiles.xml, sep = "")
+  
+  for(i in 1:npath){
+    ##  out.list=lapply(1:npath, function(i){
+    if(kegg.native) tfiles=c(tfiles.xml[i],tfiles.png[i])
+    else tfiles=tfiles.xml[i]
+    if(!all(tfiles %in% kfiles)){
+      dstatus=download.kegg(pathway.id = pathway.id[i], species = species, kegg.dir=kegg.dir, file.type=ttype)
+      if(dstatus=="failed") {
+        warn.fmt="Failed to download KEGG xml/png files, %s skipped!"
+        warn.msg=sprintf(warn.fmt, pathway.name[i])
+        message("Warning: ", warn.msg)
+        return(invisible(0))#out.list[[i]]=0
+      }
+    }
 
-  if(missing(xml.file)) xml.file <- paste(kegg.dir, "/", pathway.name,
-                                          ".xml", sep = "")
   if(kegg.native){
-    node.data=try(node.info(xml.file), silent=T)
+    node.data=try(node.info(xml.file[i]), silent=T)
     if(class(node.data)=="try-error"){
-      warn.msg=sprintf(warn.fmt, xml.file)
+      warn.msg=sprintf(warn.fmt, xml.file[i])
       message("Warning: ", warn.msg)
       return(invisible(0))
     }
@@ -186,16 +196,16 @@ function(
     sel.idx=sel.idx & nna.idx
     if(sum(sel.idx)<min.nnodes){
       warn.fmt="Number of mappable nodes is below %d, %s skipped!"
-      warn.msg=sprintf(warn.fmt, min.nnodes, pathway.name)
+      warn.msg=sprintf(warn.fmt, min.nnodes, pathway.name[i])
       message("Warning: ", warn.msg)
       return(invisible(0))
     }
     node.data=lapply(node.data, "[", sel.idx)
   } else {
-    gR1=try(parseKGML2Graph2(xml.file, genes=F, expand=expand.node, split.group=split.group), silent=T)
+    gR1=try(parseKGML2Graph2(xml.file[i], genes=F, expand=expand.node, split.group=split.group), silent=T)
     node.data=try(node.info(gR1), silent=T)
     if(class(node.data)=="try-error"){
-      warn.msg=sprintf(warn.fmt, xml.file)
+      warn.msg=sprintf(warn.fmt, xml.file[i])
       message("Warning: ", warn.msg)
       return(invisible(0))
     }
@@ -214,6 +224,7 @@ function(
                 warn.msg=sprintf(warn.fmt, species)
                 message("Warning: ", warn.msg)
               } else {
+                browser()
                 plot.data.gene$labels=eg2id(as.character(plot.data.gene$kegg.names), category="SYMBOL", pkg.name=gene.annotpkg)[,2]
                 mapped.gnodes=rownames(plot.data.gene)
                 node.data$labels[mapped.gnodes]=plot.data.gene$labels
@@ -233,30 +244,35 @@ function(
           } else plot.data.cpd=cols.ts.cpd=NULL
 
   if(kegg.native){
- pv.pars= keggview.native(plot.data.gene=plot.data.gene, cols.ts.gene=cols.ts.gene, plot.data.cpd=plot.data.cpd, cols.ts.cpd=cols.ts.cpd, node.data=node.data, pathway.name=pathway.name, kegg.dir=kegg.dir, limit=limit, bins=bins, both.dirs=both.dirs,discrete=discrete, low=low, mid=mid, high=high, na.col=na.col, ...)
+ pv.pars= keggview.native(plot.data.gene=plot.data.gene, cols.ts.gene=cols.ts.gene, plot.data.cpd=plot.data.cpd, cols.ts.cpd=cols.ts.cpd, node.data=node.data, pathway.name=pathway.name[i], kegg.dir=kegg.dir, limit=limit, bins=bins, both.dirs=both.dirs,discrete=discrete, low=low, mid=mid, high=high, na.col=na.col, ...)
 } else{
-  pv.pars= keggview.graph(plot.data.gene=plot.data.gene, cols.ts.gene=cols.ts.gene, plot.data.cpd=plot.data.cpd, cols.ts.cpd=cols.ts.cpd, node.data=node.data, path.graph=gR1, pathway.name=pathway.name,  map.cpdname=map.cpdname, split.group=split.group, limit=limit, bins=bins, both.dirs=both.dirs, discrete=discrete, low=low, mid=mid, high=high, na.col=na.col, ...)
+  pv.pars= keggview.graph(plot.data.gene=plot.data.gene, cols.ts.gene=cols.ts.gene, plot.data.cpd=plot.data.cpd, cols.ts.cpd=cols.ts.cpd, node.data=node.data, path.graph=gR1, pathway.name=pathway.name[i],  map.cpdname=map.cpdname, split.group=split.group, limit=limit, bins=bins, both.dirs=both.dirs, discrete=discrete, low=low, mid=mid, high=high, na.col=na.col, ...)
 }
   
-
   plot.data.gene=cbind(plot.data.gene, cols.ts.gene)
   if(!is.null(plot.data.gene)){
-    cnames=colnames(plot.data.gene)[-(1:7)]
+    cnames=colnames(plot.data.gene)[-(1:8)]
     nsamp=length(cnames)/2
     if(nsamp>1){
       cnames[(nsamp+1):(2*nsamp)]=paste(cnames[(nsamp+1):(2*nsamp)], "col", sep=".")
     } else cnames[2]="mol.col"
-    colnames(plot.data.gene)[-(1:7)]=cnames
+    colnames(plot.data.gene)[-(1:8)]=cnames
   }
   plot.data.cpd=cbind(plot.data.cpd, cols.ts.cpd)    
   if(!is.null(plot.data.cpd)){
-    cnames=colnames(plot.data.cpd)[-(1:7)]
+    cnames=colnames(plot.data.cpd)[-(1:8)]
     nsamp=length(cnames)/2
     if(nsamp>1){
       cnames[(nsamp+1):(2*nsamp)]=paste(cnames[(nsamp+1):(2*nsamp)], "col", sep=".")
     } else cnames[2]="mol.col"
-    colnames(plot.data.cpd)[-(1:7)]=cnames
+    colnames(plot.data.cpd)[-(1:8)]=cnames
   }
-  return(invisible(list(plot.data.gene=plot.data.gene, plot.data.cpd=plot.data.cpd)))
+#  return(list(plot.data.gene=plot.data.gene, plot.data.cpd=plot.data.cpd))#out.list[[i]]=
+  out.list[[i]]=list(plot.data.gene=plot.data.gene, plot.data.cpd=plot.data.cpd)
+}
+
+  if(npath==1) out.list=out.list[[1]] else names(out.list)=pathway.name
+  
+  return(invisible(out.list))
 }
 

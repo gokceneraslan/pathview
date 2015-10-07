@@ -9,7 +9,8 @@ This is the downloader function for KEGG pathways, automatically
 download graph images and associated KGML data.
 }
 \usage{
-download.kegg(pathway.id = "00010", species = "hsa", kegg.dir = ".")
+download.kegg(pathway.id = "00010", species = "hsa", kegg.dir = ".",
+file.type=c("xml", "png"))
 }
 
 \arguments{
@@ -25,6 +26,10 @@ species="ko". Default species="hsa", it is equivalent to use either
   \item{kegg.dir}{
 character, the directory of KEGG pathway data file (.xml) and image file
 (.png). Default kegg.dir="." (current working directory).
+}
+  \item{file.type}{
+character, the file type(s) to be downloaded, either KEGG pathway data
+file (xml) or image file (png). Default include both types. 
 }
 }
 \details{

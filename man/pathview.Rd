@@ -20,7 +20,7 @@ functions, and pathview is the main function providing a unified
 interface to downloader, parser, mapper and viewer functions.
 }
 \usage{
-pathview(gene.data = NULL, cpd.data = NULL, xml.file = NULL, pathway.id,
+pathview(gene.data = NULL, cpd.data = NULL, pathway.id,
 species = "hsa", kegg.dir = ".", cpd.idtype = "kegg", gene.idtype =
 "entrez", gene.annotpkg = NULL, min.nnodes = 3, kegg.native = TRUE,
 map.null = TRUE, expand.node = FALSE, split.group = FALSE, map.symbol =
@@ -76,12 +76,8 @@ low = list(gene = "green", cpd = "blue"), mid = list(gene = "gray", cpd
  cpd.data=NULL. Note that gene.data and cpd.data can't be NULL
  simultaneously.
 }
-  \item{xml.file}{
- character, the KGML data file name without directory path. Directory
- path is supplied with kegg.dir argument.
-}
   \item{pathway.id}{
- character, the KEGG pathway ID, usually 5 digit, may also include the 3
+ character vector, the KEGG pathway ID(s), usually 5 digit, may also include the 3
  letter KEGG species code.
 }
   \item{species}{
@@ -93,7 +89,10 @@ species="ko". Default species="hsa", it is equivalent to use either
 }
   \item{kegg.dir}{
 character, the directory of KEGG pathway data file (.xml) and image file
-(.png). Default kegg.dir="." (current working directory).
+(.png). Users may supply their own data files in the same format and
+naming convention of KEGG's (species code + pathway id,
+e.g. hsa04110.xml, hsa04110.png etc) in this directory. Default
+kegg.dir="." (current working directory). 
 }
   \item{cpd.idtype}{
 character, ID type used for the cpd.data. Default cpd.idtype="kegg" (include
@@ -362,7 +361,10 @@ pathways. Currently only KEGG pathways are implemented. Hopefully, pathways from
 Reactome, NCI and other databases will be supported in the future.
 }
 \value{
-  The result returned by pathview function is a named list, with 2
+  From viersion 1.9.3, pathview can accept either a single pathway or
+  multiple pathway ids. The result returned by pathview function is a
+  named list corresponding to the input pathway ids. Each element (for
+  each pathway itself is a named list, with 2
   elements ("plot.data.gene", "plot.data.cpd"). Both elements
   are data.frame or NULL depends on the corresponding input
   data gene.data and cpd.data. These data.frames record the plot data
@@ -370,7 +372,10 @@ Reactome, NCI and other databases will be supported in the future.
   columns are:
   \item{kegg.names}{standard KEGG IDs/Names for mapped nodes. It's
     Entrez Gene ID or KEGG Compound Accessions.}
-  \item{labels}{Node labels to be used when needed
+  \item{labels}{Node labels to be used when needed.
+  }
+  \item{all.mapped}{All molecule (gene or compound) IDs mapped to this
+    node.
   }
   \item{type}{node type, currently 4 types are supported:
     "gene","enzyme", "compound" and "ortholog".

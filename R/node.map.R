@@ -23,7 +23,7 @@ na.plot.data=function(){
     ord=order(items)
     items=items[ord]
      kns=kns[ord]
-      return(c(kns[1], spacials[i,], NA))
+      return(c(kns[1],"", spacials[i,], NA))
     })
   }
 
@@ -58,10 +58,10 @@ if(is.null(mol.data)){
         kns=kns[ord]
         hit=items %in% mapped.mols 
         if(sum(hit)==0) {
-          return(c(kns[1], spacials[i,], rep(NA, ncol(mol.data))))
+          return(c(kns[1], "", spacials[i,], rep(NA, ncol(mol.data))))
         } else if(sum(hit)==1) {
           edata=mol.data[as.character(items[hit]),]
-          return(c(kns[hit], spacials[i,], edata))
+          return(c(kns[hit], kns[hit], spacials[i,], edata))
         } else {
           node.sum=eval(as.name(node.sum))
                                         #      edata=apply(cbind(mol.data[as.character(items[hit]),]), 2, node.sum, na.rm=T)
@@ -70,18 +70,20 @@ if(is.null(mol.data)){
             if(length(x)<1) return(NA)
             else return(node.sum(x, na.rm=F))
           })
-          return(c(kns[hit][1], spacials[i,], edata))
+          return(c(kns[hit][1], paste(kns[hit],collapse=","), spacials[i,], edata))
         }    
       })
     }
   }
+
 colnames(plot.data)=names(node.data$kegg.names)
 plot.data=as.data.frame(t(plot.data), stringsAsFactors = F)
   plot.data$labels=node.data$labels
   ncs=ncol(plot.data)
   plot.data=plot.data[,c(1,ncs,2:(ncs-1))]
-  colnames(plot.data)[c(1,8:ncs)]=c("kegg.names",colnames(mol.data))
-for(ic in (1:ncol(plot.data))[-c(1:3)]) plot.data[,ic]=as.numeric(plot.data[,ic])
+if(is.null(mol.data)) cns="mol.data" else cns=colnames(mol.data)
+colnames(plot.data)[c(1,3,9:ncs)]=c("kegg.names","all.mapped",cns)#c(1,8:ncs)
+for(ic in (1:ncol(plot.data))[-c(1:4)]) plot.data[,ic]=as.numeric(plot.data[,ic])#-c(1:3)
 
 return(plot.data)
 }
