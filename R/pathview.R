@@ -166,7 +166,7 @@ function(
   #if(is.null(xml.file) | length(xml.file)!=npath)#custom xml and png file need to have the same names
   tfiles.xml=paste(pathway.name, "xml", sep=".")
   tfiles.png=paste(pathway.name, "png", sep=".")
-  if(kegg.native) ttype=c("xml", "png") else ttype="png"
+  if(kegg.native) ttype=c("xml", "png") else ttype="xml"
   xml.file <- paste(kegg.dir, "/", tfiles.xml, sep = "")
   
   for(i in 1:npath){
