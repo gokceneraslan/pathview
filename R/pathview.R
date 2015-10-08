@@ -224,7 +224,7 @@ function(
                 warn.msg=sprintf(warn.fmt, species)
                 message("Warning: ", warn.msg)
               } else {
-                browser()
+#                browser()
                 plot.data.gene$labels=eg2id(as.character(plot.data.gene$kegg.names), category="SYMBOL", pkg.name=gene.annotpkg)[,2]
                 mapped.gnodes=rownames(plot.data.gene)
                 node.data$labels[mapped.gnodes]=plot.data.gene$labels
