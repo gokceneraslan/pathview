@@ -15,8 +15,7 @@ sim.mol.data=function(mol.type=c("gene","gene.ko","cpd")[1], id.type=NULL, speci
     id.type=toupper(id.type)
 
     data(bods)
-    load("~/project/pathview/r/pathview/data/gene.idtype.bods.rda")
-    ##data(gene.idtype.bods)
+    data(gene.idtype.bods)
     org19=bods[,"kegg code"]
     
     if(!species %in% c(org19, "ko")){
