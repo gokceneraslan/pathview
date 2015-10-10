@@ -16,7 +16,7 @@ eg2id(eg, category = gene.idtype.list[1:2], org = "Hs", pkg.name = NULL,
 ...)
 id2eg(ids, category = gene.idtype.list[1], org = "Hs", pkg.name = NULL, ...)
 geneannot.map(in.ids, in.type, out.type, org="Hs", pkg.name=NULL,
-unique.map=TRUE, na.rm=TRUE, keep.order=FALSE)
+unique.map=TRUE, na.rm=TRUE, keep.order=TRUE)
 }
 \arguments{
   \item{eg}{
@@ -69,7 +69,7 @@ for mapped entries). Default na.rm=TRUE.
 }
   \item{keep.order}{
 logical, whether to keep the original input order even with all unmapped
-input IDs. Default unique.map=FALSE.
+input IDs. Default keep.order=TRUE.
 }
 }
 \details{
