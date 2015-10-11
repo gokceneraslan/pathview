@@ -71,6 +71,9 @@ for mapped entries). Default na.rm=TRUE.
 logical, whether to keep the original input order even with all unmapped
 input IDs. Default keep.order=TRUE.
 }
+  \item{\dots}{
+    other arguments to be passed to geneannot.map function.
+  }
 }
 \details{
 KEGG uses Entrez Gene ID as its standard gene ID. Therefore, all gene

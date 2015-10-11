@@ -50,7 +50,7 @@ download.kegg <-
         message("Info: ", msg)
         png.url=sprintf(png.fmt,  pathway.id[i])#species[i], png.fnames[i])
         png.target=sprintf("%s/%s", kegg.dir, png.fnames[i])
-        png.status=suppressWarnings(try(download.file(png.url, png.target, quiet=T), silent=T))#mode="wb"
+        png.status=suppressWarnings(try(download.file(png.url, png.target, quiet=T, mode="wb"), silent=T))
 
         if(png.status!=0) all.status[i]="failed"
         if(class(png.status)=="try-error"){
