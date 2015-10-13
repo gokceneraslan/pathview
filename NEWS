@@ -1,0 +1,148 @@
+VERSION 1.9.3
+-------------
+
+  o pathview can accept a vector of multiple pathway ids, and
+    map/render the user data onto all these pathways in one call.
+
+  o one extra column "all.mapped" was added to pathview output
+    data.frames as to show all the gene/compound IDs mapped to each
+    node.
+
+  o add geneannot.map as a generic function for gene ID or annotation
+    mapping.
+
+  o sim.mol.data now generate data with all major gene ID types for
+    all 19 species in bods, not just human.
+
+  o download.kegg now let the user to choose from xml, png or both
+    file types to download for each input pathway. In the meantime, it
+    uses the KEGG REST API instead of the classical KEGG download
+    links. All potential pathways including the general pathways can be
+    downloaded this way.
+
+  o solve the redundant import from graph package.
+
+  o import specific instead of all functions from XML package.
+
+VERSION 1.9.1
+-------------
+
+  o solve the install error due to the recent change in KEGGgraph
+    package.
+
+VERSION 1.5.4
+-------------
+
+  o adjust run-time messages into 3 consistent classes: Info (on
+    progress), Note and Warning.
+
+  o include paths.hsa data, the full list of human pathway ID/names
+    from KEGG, as to help user specify target pathways when calling
+    pathview.
+
+  o updated korg to included over 80 newly added species, such as
+    sheep, apple, mandarin orange etc. Pathview can work with 3050
+    species now.
+
+  o adjust the definitions of 7 arguments for pathview function:
+    discrete, limit,bins, both.dirs, trans.fun, low, mid, high. These
+    used to be a list of two logical elements with "gene" and "cpd" as
+    the names. They can be vectors of two or one element(s) now. This
+    makes pathview easier to use now.
+
+  o Vigette has been reformatted: add a Citation section, and some
+    example on reading user data into R, fix a few typos.
+
+
+VERSION 1.4.2
+-------------
+
+  o fixed bug in render.kegg.node function, which generates black
+    lines in some nodes of multiple sample view.
+
+VERSION 1.3.6
+-------------
+
+  o ajusted node x coordinate by +0.5 to better fit the color blocks
+    in 2 layer native kegg views.
+
+VERSION 1.3.4
+-------------
+
+  o updated bods to included an extra column of id.type, the default
+    gene ID type.
+
+
+VERSION 1.2.4
+-------------
+
+  o updated korg to included over 600 newly added species. Pathview
+    can work with 2970 species now.
+
+  o Make returned values from pathview, keggview.native and
+    keggview.graph functions invisible.
+
+VERSION 1.2.3
+-------------
+
+  o Fixed bug in node.map function, which produces 0 values when all
+    multiple genes in a node are NA's.
+
+VERSION 1.2.2
+-------------
+
+  o Fixed bug in mol.sum function, which generates "incorrect number of
+    dimension" or NA's when sum.method="median" etc.
+
+VERSION 1.2.1
+-------------
+
+  o Fixed bug in "missing red disease gene node labels" in diease
+    pathways. To avoid interfering with node coloring, set all disease
+    gene labels to black instead.
+
+VERSION 1.1.7
+-------------
+
+  o Graphviz view can automatic choose different types of legends,
+    either on nodes, edges or both depending on the specific pathways.
+
+  o Vigette has been reformatted: the "Quick start" section added
+
+VERSION 1.1.6
+-------------
+  o Pathview can plot/integrate/compare multiple states/samples in the
+    same graph. Several functions and data objects are revised:
+    including pathview, keggview.native, keggview.graph,
+    render.kegg.node etc. New section on multiple state data with
+    working exampleshas been added.
+
+  o Vigette has been reformatted: Data integration section splitted
+    into multiple sub-sections.
+
+VERSION 1.1.5
+-------------
+  o Pathview works with species where default KEGG gene ID is not
+    Entrez Gene. Several functions and data objects are revised:
+    including pathview, node.map, sim.mol.data, kegg.species.code,
+    korg. New section on KEGG species and Gene ID usage with working
+    exampleshas been added.
+
+VERSION 1.1.3
+-------------
+  o Pathview paper published in Bioinformatics
+
+VERSION 1.0.0
+-------------
+  o Initial release with Bioconductor
+
+  o Main function: pathview
+
+  o Four functional modules: 
+    -Downloader: download.kegg;
+    -Parser: node.info, combineKEGGnodes, reaction2edge;
+    -Mapper: node.map, eg2id, id2eg, cpdkegg2name, cpdname2kegg,
+    	     cpd2kegg, cpdidmap, kegg.species.code, mol.sum, 
+	     sim.mol.data;
+    -Viewer: keggview.native, keggview.graph, node.color, 
+    	     col.key, wordwrap, strfit
