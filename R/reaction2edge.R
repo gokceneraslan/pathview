@@ -45,6 +45,7 @@ function(path, gR){
   eid=as.character(eid)
   rnames=names(rn.grps)
   ndata.new=list()
+  if(length(grp.idx)>0){
   for(i in 1:length(grp.idx)){
     j=grp.idx[i]
     ndata1=ndata[[rn.grps[[j]][1]]]
@@ -57,9 +58,10 @@ function(path, gR){
                          map = "NA", graphics = gdata.new)
   }
   names(ndata.new)=eid
-  ndata.new=c(ndata,ndata.new)
 #  gR=graph::addNode(eid, gR)
   gR=addNode(eid, gR)
+}
+  ndata.new=c(ndata,ndata.new)
   
 #create edges for ECrel and maplink types of relationships
   slen=sapply(rdata.tab[,3], length)

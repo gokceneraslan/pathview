@@ -12,7 +12,6 @@ function(object, short.name=TRUE){
     stop("object should be either a filename, KEGGPathway, or graphNEL!")
   }
 
-
   nodeNames=sapply(ndata, getName)
   nodeType=sapply(ndata, getType)
   nodeComp=sapply(ndata, getComponent)
@@ -41,6 +40,7 @@ function(object, short.name=TRUE){
     nd.list$labels=gnames
     nd.list$kegg.names=lapply(nd.list$kegg.names, function(x) gsub("^.*:", "", x))
   }
+  
   nn=names(nodeNames)
   nd.list= lapply(nd.list, function(x) {
     names(x) <- nn
