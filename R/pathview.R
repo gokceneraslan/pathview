@@ -110,7 +110,7 @@ function(
   if(length(grep("ENTREZ|KEGG", gene.idtype))<1 & !is.null(gene.data)){
     if(is.na(gene.annotpkg)) stop("No proper gene annotation package available!")
     if(!gene.idtype %in% gene.idtype.bods[[species]]) stop("Wrong input gene ID type!")
-    gene.idmap=id2eg(gd.names, category=gene.idtype, pkg.name=gene.annotpkg)
+    gene.idmap=id2eg(gd.names, category=gene.idtype, pkg.name=gene.annotpkg, unique.map=F)
     gene.data=mol.sum(gene.data, gene.idmap)
     gene.idtype="ENTREZ"
   }

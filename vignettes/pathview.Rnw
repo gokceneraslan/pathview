@@ -44,11 +44,14 @@
 
 \section{Cite our work}
 \label{sec:cite}
+Please cite the Pathview paper formally if you use this package. This will help to support the maintenance and growth of the open source project. 
+\\
+\\
 Weijun Luo and Cory Brouwer. Pathview: an R/Bioconductor package for pathway-based data integration and visualization. Bioinformatics, 29(14):1830-1831, 2013. \href{http://bioinformatics.oxfordjournals.org/content/29/14/1830.full}{doi: 10.1093/bioinformatics/btt285}.
 
 \section{Quick start with demo data}
 \label{sec:quick}
-This is the most basic use of \Rpackage{pathview}, please check the full description below for details. Here we assume that the input data are already read in R as in the demo examples. If you are not sure how to do so, you may check \hyperref[code:readin]{Section Common uses for data visualization} or \Rpackage{gage} secondary vignette, \href{http://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/dataPrep.pdf}{"Gene set and data preparation"}.
+This is the most basic use of \Rpackage{pathview}, please check the full description below for details. Here we assume that the input data are already read in R as in the demo examples. If you are not sure how to do so, you may check \hyperref[code:readin]{Section Common uses for data visualization} or \Rpackage{gage} secondary vignette, \href{http://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/dataPrep.pdf}{"Gene set and data preparation"}. If you have difficulties in using R in general, you may use the \href{http://pathview.uncc.edu/}{Pathview Web server}.
 
 <<synopsis1, echo=TRUE,  eval=FALSE>>=
 library(pathview)

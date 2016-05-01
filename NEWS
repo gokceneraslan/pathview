@@ -1,3 +1,9 @@
+VERSION 1.10.2
+-------------
+  
+  o fixed problem that no node mapped when one gene/protein ID maps to
+    multiple Entrez Gene ID (like Enzyme IDs): id2eg call with unique.map=F.
+
 VERSION 1.10.1
 -------------
 
