@@ -8,6 +8,7 @@ keggview.graph <-function(
                            pathway.name,
                            out.suffix="pathview",
                            pdf.size=c(7,7),
+                           graph.file.name,
 
                           multi.state=TRUE,
                           same.layer=TRUE,
@@ -276,6 +277,13 @@ if(multi.state) {
   if(sum(cpd.idx)>0) ell.col.plot=ell.col
 }
   
+if(!missing(graph.file.name)) {
+  message("Saving graph in Rdata format into file: ", graph.file.name)
+  #dot.graph <- agopen(gR2.layout, pathway.name)
+  #agwrite(dot.graph, graph.file.name)
+  saveRDS(gR2.layout, graph.file.name)
+}
+
 for(np in 1:nplots){
   gfile=paste(pathway.name, pn.suffix[np],"pdf", sep=".")
 #  gfile=paste(pathway.name, pn.suffix[1],"pdf", sep=".")
